@@ -4,17 +4,18 @@
   "compatibility": ">=1.5.0",
   "sdk": 2,
   "name": {
-    "en": "Christmas Clusterlights (BLE)"
+    "en": "Christmas Clusterlights (BLE Bluetooth)"
   },
   "description": {
-    "en": "Homey app to integrate BLE christmas lights as sold by action"
+    "en": "Homey app for bluetooth LED cluster lights",
+    "nl": "Homey app voor bluetooth LED clusterverlichting"
   },
   "category": [
     "lights"
   ],
   "tags": {
-    "en": [ "christmas", "led", "lights", "cluster", "action" ],
-    "nl": [ "kerst", "led", "verlichting", "cluster", "action"]
+    "en": [ "christmas", "xmas", "led", "lights", "cluster", "bluetooth", "BLE" ],
+    "nl": [ "kerst", "kerstmis", "led", "verlichting", "cluster", "bluetooth", "BLE"]
   },
   "permissions": [
   ],
@@ -39,7 +40,7 @@
   "url": "https://github.com/gruijter/com.gruijter.clusterlights/issues"
   },
   "homeyCommunityTopicId": 0,
-  "gtin": [""],
+  "gtin": ["8719632923589", "8719202334944", "8800159746246", "8719202336085"],
   "drivers": [
     {
       "id": "cluster_light",

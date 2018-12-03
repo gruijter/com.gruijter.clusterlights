@@ -21,6 +21,8 @@ along with com.gruijter.clusterlights. If not, see <http://www.gnu.org/licenses/
 
 const Homey = require('homey');
 
+const LEDservice = 'fff0';
+const onOffCharacteristic = 'fff1';
 const on = Buffer.from('01010101', 'hex');
 const off = Buffer.from('01010100', 'hex');
 
@@ -64,9 +66,9 @@ class ClusterLightDevice extends Homey.Device {
 	async onInit() {
 		try {
 			this.log('device init: ', this.getName(), 'id:', this.getData().id);
-			this.advertisement = await this.findAdvertisement();
+			this.advertisement = await this.findAdvertisement();	// links to the device
 			this.log(this.advertisement);
-			this.peripheral = undefined;
+			this.peripheral = undefined;	// is a connected device
 			this.registerCapabilityListener('onoff', async (value) => {
 				this.log(`on/off requested: ${value}`);
 				const service = await this.connect();
