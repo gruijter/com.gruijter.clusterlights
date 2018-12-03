@@ -23,8 +23,8 @@ along with com.gruijter.clusterlights. If not, see <http://www.gnu.org/licenses/
 
 const Homey = require('homey');
 
-const LEDservice = 'fff0';
-const LEDCharacteristic = 'fff1';
+const LEDserviceUuid = 'fff0';
+const LEDControlCharacteristicUuid = 'fff1';
 const on = Buffer.from('01010101', 'hex');
 const off = Buffer.from('01010100', 'hex');
 const dimBase = '030101';
@@ -55,14 +55,18 @@ function dimLevel(value) {
 class ClusterLightDevice extends Homey.Device {
 
 
-	async findAdvertisement() {
+	async attachPeripheral() {
 		try {
-			const advertisement = await Homey.ManagerBLE.find(this.getData().id);
+			this.advertisement = await Homey.ManagerBLE.find(this.getData().id);
+			this.peripheral = await this.advertisement.connect();
+			await this.peripheral.discoverAllServicesAndCharacteristics();
+			this.LEDservice = await this.peripheral.getService(LEDserviceUuid);
+			await this.peripheral.disconnect();
 			this.setAvailable();
-			return Promise.resolve(advertisement);
+			return Promise.resolve(true);
 		} catch (error) {
-			// need to keep retrying somehow
 			this.setUnavailable('light could no tbe found (out of in range?)');
+			this.disconnect();
 			return Promise.reject(error);
 		}
 	}
@@ -70,21 +74,18 @@ class ClusterLightDevice extends Homey.Device {
 	// connect to the peripheral, and return the service
 	async connect() {
 		try {
-			if (this.peripheral && this.peripheral.isConnected) {
-				console.log('already connected to peripheral');
-			} else {
-				console.log('not connected to peripheral; connecting now...');
-				this.peripheral = await this.advertisement.connect();
+			if (!this.peripheral) {
+				console.log('need to attach device first');
+				await this.attachPeripheral();
 			}
-			// discoverAllServicesAndCharacteristics
-			const services = await this.peripheral.discoverAllServicesAndCharacteristics();
-			// get the service in alternative way
-			const service = services.filter(serv => serv.uuid === LEDservice);
-			this.LEDservice = service[0];
-
+			const connected = await this.peripheral.assertConnected()
+				.catch(error => true);
+			await this.peripheral.discoverAllServicesAndCharacteristics();
+			this.LEDservice = await this.peripheral.getService(LEDserviceUuid);
 			this.setAvailable();
-			return Promise.resolve(service[0]);
+			return Promise.resolve(connected);
 		} catch (error) {
+			this.log('error connecting');
 			this.setUnavailable('could not connect to light');
 			this.disconnect();
 			return Promise.reject(error);
@@ -110,7 +111,7 @@ class ClusterLightDevice extends Homey.Device {
 			await this.connect();
 			while (this.commandQueue.length > 0) {
 				const comm = this.commandQueue.shift();
-				this.LEDservice.write(LEDCharacteristic, comm); // do I need to do await here?
+				this.LEDservice.write(LEDControlCharacteristicUuid, comm); // do I need to do await here?
 			}
 			await this.disconnect();
 			this.busy = false;	// or before disconnect?
@@ -125,7 +126,7 @@ class ClusterLightDevice extends Homey.Device {
 		try {
 			// console.log('polling now');
 			if (!this.getAvailable()) {
-				await this.findAdvertisement();
+				await this.attachPeripheral();
 			}
 		} catch (error) {
 			this.log(error);
@@ -136,12 +137,12 @@ class ClusterLightDevice extends Homey.Device {
 	async onInit() {
 		try {
 			this.log('device init: ', this.getName(), 'id:', this.getData().id);
-			this.advertisement = await this.findAdvertisement();	// links to the device
-			// this.log(this.advertisement);
-			this.peripheral = undefined;	// is a connected device
-			this.LEDservice = undefined;	// is a connected service on the peripheral
+			this.advertisement = undefined;	// is a link to the device
+			this.peripheral = undefined;	// is a device (connected or unconnected)
+			this.LEDservice = undefined;	// is a service on the peripheral
 			this.commandQueue = [];	// empty command queue
 			this.busy = false; // no commands are in the queue
+			await this.attachPeripheral();	// find and attach the peripheral
 			this.registerCapabilityListener('onoff', async (value) => {
 				try {
 					this.log(`on/off requested: ${value}`);
@@ -238,7 +239,7 @@ class ClusterLightDevice extends Homey.Device {
 			// start polling device for status info
 			this.intervalIdDevicePoll = setInterval(() => {
 				this.poll();
-			}, 1000 * 15);	// 15 seconds poll
+			}, 1000 * 20);	// 20 seconds poll
 		} catch (error) {
 			this.log(error);
 		}

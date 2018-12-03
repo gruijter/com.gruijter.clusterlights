@@ -1,6 +1,6 @@
 {
   "id": "com.gruijter.clusterlights",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "compatibility": ">=1.5.0",
   "sdk": 2,
   "name": {
@@ -20,8 +20,8 @@
   "permissions": [
   ],
   "images": {
-    "large": "/assets/images/large.png",
-    "small": "/assets/images/small.png"
+    "large": "/assets/images/large.jpg",
+    "small": "/assets/images/small.jpg"
   },
   "author": {
     "name": "Robin Gruijter",
@@ -46,11 +46,11 @@
       "type": "enum",
       "title": {
         "en": "mode",
-        "nl": "modus"
+        "nl": "effect"
       },
       "desc": {
         "en": "Mode of the light",
-        "nl": "Modus van het licht"
+        "nl": "licht effect"
       },
       "values": [
         {
@@ -114,15 +114,18 @@
         "en": "Cluster light",
         "nl": "Cluster light"
       },
+      "images": {
+        "large": "drivers/cluster_light/assets/images/large.jpg",
+        "small": "drivers/cluster_light/assets/images/small.jpg"
+       },
       "class": "light",
       "capabilities": [ "onoff", "dim", "mode" ],
       "capabilitiesOptions": {
 				"mode": {
           "title": {
             "en": "mode",
-            "nl": "modus"
+            "nl": "effect"
           },
-          "preventInsights": true,
           "showTitle": true
 				}
 			},
@@ -142,7 +145,7 @@
             "options": {
               "title": {
                 "en": "mode",
-                "nl": "modus"
+                "nl": "effect"
               },
               "showTitle": true
             }

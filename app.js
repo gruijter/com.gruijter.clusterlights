@@ -21,6 +21,9 @@ along with com.gruijter.clusterlights. If not, see <http://www.gnu.org/licenses/
 
 const Homey = require('homey');
 const Logger = require('./captureLogs.js');
+const util = require('util');
+
+const setTimeoutPromise = util.promisify(setTimeout);
 
 class MyApp extends Homey.App {
 
@@ -72,8 +75,9 @@ async function discoverBle() {
 
 		// discover all peripherals that advertise a service fff0
 		const list = await ble.discover(['fff0']);
-		console.log(list);
+		// console.log(list);
 		// connect to the first peripheral
+		// await setTimeoutPromise(1000, 'waiting is done');
 		const peripheral = await list[0].connect();
 		console.log(peripheral);
 		// // write command 'off' to the peripheral
@@ -82,18 +86,31 @@ async function discoverBle() {
 		// discoverAllServicesAndCharacteristics
 		const sac = await peripheral.discoverAllServicesAndCharacteristics();
 		// console.log(sac);
-
-		// get the service in alternative way
-		const service = sac.filter(serv => serv.uuid === 'fff0');
+		// await setTimeoutPromise(1000, 'waiting is done');
+		const service = await peripheral.getService('fff0');
 		console.log(service);
+
+		// await setTimeoutPromise(1000, 'waiting is done');
+		const characteristic = service.getCharacteristic('fff1');
+		console.log(characteristic);
+
+		// write command 'off' to the characteristic
+		await service.write('fff1', Buffer.from('01010100', 'hex'));
+
+		// // get the service in alternative way
+		// const service = sac.filter(serv => serv.uuid === 'fff0');
+		// console.log(service);
 
 		// // get the service > doesn't work!!!
 		// const service = await peripheral.getService('fff0');
 		// console.log(service);
 
-		// discover the characteristics
-		const chars = await service[0].discoverCharacteristics();
-		console.log(chars);
+		// // discover the characteristics
+		// const chars = await service[0].discoverCharacteristics();
+		// console.log(chars);
+
+		// write command 'off' to the peripheral
+		// await peripheral.write('fff0', characteristicUuid, data);
 
 		// // write command 'off' to the peripheral
 		// await service[0].write('fff1', Buffer.from('01010100', 'hex'));
@@ -101,8 +118,8 @@ async function discoverBle() {
 		// // write command 'on' to the peripheral
 		// await service[0].write('fff1', Buffer.from('01010101', 'hex'));
 
-		// write command 'dim to 100%' to the peripheral
-		await service[0].write('fff1', Buffer.from('03010163', 'hex'));
+		// // write command 'dim to 100%' to the peripheral
+		// await service[0].write('fff1', Buffer.from('03010163', 'hex'));
 
 		// disconnect the peripheral:
 		await peripheral.disconnect();
