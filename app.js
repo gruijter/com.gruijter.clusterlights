@@ -22,53 +22,6 @@ along with com.gruijter.clusterlights. If not, see <http://www.gnu.org/licenses/
 const Homey = require('homey');
 const Logger = require('./captureLogs.js');
 
-const ble = Homey.ManagerBLE;
-
-async function discoverBle() {
-	try {
-		// discover all peripherals that advertise a service fff0
-		const list = await ble.discover(['fff0']);
-		console.log(list);
-		// connect to the first peripheral
-		const peripheral = await list[0].connect();
-		console.log(peripheral);
-		// // write command 'off' to the peripheral
-		// await peripheral.write('fff0', 'fff1', Buffer.from('01010100', 'hex'));
-
-		// discoverAllServicesAndCharacteristics
-		const sac = await peripheral.discoverAllServicesAndCharacteristics();
-		// console.log(sac);
-
-		// get the service in alternative way
-		const service = sac.filter(serv => serv.uuid === 'fff0');
-		console.log(service);
-
-		// // get the service > doesn't work!!!
-		// const service = await peripheral.getService('fff0');
-		// console.log(service);
-
-		// discover the characteristics
-		const chars = await service[0].discoverCharacteristics();
-		console.log(chars);
-
-		// // write command 'off' to the peripheral
-		// await service[0].write('fff1', Buffer.from('01010100', 'hex'));
-
-		// // write command 'on' to the peripheral
-		// await service[0].write('fff1', Buffer.from('01010101', 'hex'));
-
-		// write command 'dim to 100%' to the peripheral
-		await service[0].write('fff1', Buffer.from('03010163', 'hex'));
-
-		// disconnect the peripheral:
-		await peripheral.disconnect();
-		console.log('disconnected and finished');
-
-	} catch (error) {
-		console.log(error);
-	}
-}
-
 class MyApp extends Homey.App {
 
 	onInit() {
@@ -112,3 +65,50 @@ class MyApp extends Homey.App {
 
 module.exports = MyApp;
 
+
+async function discoverBle() {
+	try {
+		const ble = Homey.ManagerBLE;
+
+		// discover all peripherals that advertise a service fff0
+		const list = await ble.discover(['fff0']);
+		console.log(list);
+		// connect to the first peripheral
+		const peripheral = await list[0].connect();
+		console.log(peripheral);
+		// // write command 'off' to the peripheral
+		// await peripheral.write('fff0', 'fff1', Buffer.from('01010100', 'hex'));
+
+		// discoverAllServicesAndCharacteristics
+		const sac = await peripheral.discoverAllServicesAndCharacteristics();
+		// console.log(sac);
+
+		// get the service in alternative way
+		const service = sac.filter(serv => serv.uuid === 'fff0');
+		console.log(service);
+
+		// // get the service > doesn't work!!!
+		// const service = await peripheral.getService('fff0');
+		// console.log(service);
+
+		// discover the characteristics
+		const chars = await service[0].discoverCharacteristics();
+		console.log(chars);
+
+		// // write command 'off' to the peripheral
+		// await service[0].write('fff1', Buffer.from('01010100', 'hex'));
+
+		// // write command 'on' to the peripheral
+		// await service[0].write('fff1', Buffer.from('01010101', 'hex'));
+
+		// write command 'dim to 100%' to the peripheral
+		await service[0].write('fff1', Buffer.from('03010163', 'hex'));
+
+		// disconnect the peripheral:
+		await peripheral.disconnect();
+		console.log('disconnected and finished');
+
+	} catch (error) {
+		console.log(error);
+	}
+}

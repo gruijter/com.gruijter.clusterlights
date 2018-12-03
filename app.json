@@ -4,7 +4,7 @@
   "compatibility": ">=1.5.0",
   "sdk": 2,
   "name": {
-    "en": "Christmas Clusterlights (BLE Bluetooth)"
+    "en": "BLE Christmas Clusterlights"
   },
   "description": {
     "en": "Homey app for bluetooth LED cluster lights",
@@ -41,6 +41,72 @@
   },
   "homeyCommunityTopicId": 0,
   "gtin": ["8719632923589", "8719202334944", "8800159746246", "8719202336085"],
+  "capabilities": {
+    "mode": {
+      "type": "enum",
+      "title": {
+        "en": "mode",
+        "nl": "modus"
+      },
+      "desc": {
+        "en": "Mode of the light",
+        "nl": "Modus van het licht"
+      },
+      "values": [
+        {
+          "id": "wave",
+          "title": {
+            "en": "wave",
+            "nl": "golven"
+          }
+        },
+        {
+          "id": "phase",
+          "title": {
+            "en": "phase",
+            "nl": "faseren"
+          }
+        },
+        {
+          "id": "phasedFadeAway",
+          "title": {
+            "en": "phased fade",
+            "nl": "fase vervagen"
+          }
+        },
+        {
+          "id": "phasedTwinkle",
+          "title": {
+            "en": "phased twinkle",
+            "nl": "fase twinkel"
+          }
+        },
+        {
+          "id": "fadeAway",
+          "title": {
+            "en": "fade away",
+            "nl": "vervagen"
+          }
+        },
+        {
+          "id": "fastTwinkle",
+          "title": {
+            "en": "fast Twinkle",
+            "nl": "snel twinkel"
+          }
+        },
+        {
+          "id": "stayOn",
+          "title": {
+            "en": "stay on",
+            "nl": "continu aan"
+          }
+        }
+      ],
+      "getable": true,
+      "setable": true
+    }
+  },
   "drivers": [
     {
       "id": "cluster_light",
@@ -49,7 +115,40 @@
         "nl": "Cluster light"
       },
       "class": "light",
-      "capabilities": [ "onoff", "dim" ],
+      "capabilities": [ "onoff", "dim", "mode" ],
+      "capabilitiesOptions": {
+				"mode": {
+          "title": {
+            "en": "mode",
+            "nl": "modus"
+          },
+          "preventInsights": true,
+          "showTitle": true
+				}
+			},
+      "mobile": {
+        "components": [
+          {
+            "id": "icon",
+            "capabilities": [ "onoff"]
+          },
+          {
+            "id": "slider",
+            "capabilities": [ "dim" ]
+          },
+          {
+            "id": "picker",
+            "capabilities": [ "mode" ],
+            "options": {
+              "title": {
+                "en": "mode",
+                "nl": "modus"
+              },
+              "showTitle": true
+            }
+          }
+        ]
+      },
       "pair": [
         {
           "id": "list_devices",

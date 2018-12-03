@@ -28,7 +28,16 @@ const LEDCharacteristic = 'fff1';
 const on = Buffer.from('01010101', 'hex');
 const off = Buffer.from('01010100', 'hex');
 const dimBase = '030101';
-// const onOffBase = '010101';
+const mode = {
+	stayOff:	Buffer.from('0501020300', 'hex'),	// not used, makes no sense :)
+	wave:	Buffer.from('0501020301', 'hex'),
+	phase:	Buffer.from('0501020302', 'hex'),
+	phasedFadeAway:	Buffer.from('0501020304', 'hex'),
+	phasedTwinkle:	Buffer.from('0501020308', 'hex'),
+	fadeAway:	Buffer.from('0501020310', 'hex'),
+	fastTwinkle: Buffer.from('0501020320', 'hex'),
+	stayOn:	Buffer.from('0501020340', 'hex'),
+};
 
 function dimLevel(value) {
 	// const dimMin = Buffer.from('03010101', 'hex');	// decimal 1
@@ -114,7 +123,7 @@ class ClusterLightDevice extends Homey.Device {
 
 	async poll() {
 		try {
-			console.log('polling now');
+			// console.log('polling now');
 			if (!this.getAvailable()) {
 				await this.findAdvertisement();
 			}
@@ -157,7 +166,15 @@ class ClusterLightDevice extends Homey.Device {
 					return Promise.reject(error);
 				}
 			});
-
+			this.registerCapabilityListener('mode', async (value) => {
+				try {
+					this.log(`mode change requested: ${value}`);
+					await this.sendCommand(mode[value]);
+					return Promise.resolve(true);
+				} catch (error) {
+					return Promise.reject(error);
+				}
+			});
 			// // init some values
 			// this._driver = this.getDriver();
 			// // create router session
