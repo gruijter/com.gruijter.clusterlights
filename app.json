@@ -1,0 +1,67 @@
+{
+  "id": "com.gruijter.clusterlights",
+  "version": "0.0.1",
+  "compatibility": ">=1.5.0",
+  "sdk": 2,
+  "name": {
+    "en": "Christmas Clusterlights (BLE)"
+  },
+  "description": {
+    "en": "Homey app to integrate BLE christmas lights as sold by action"
+  },
+  "category": [
+    "lights"
+  ],
+  "tags": {
+    "en": [ "christmas", "led", "lights", "cluster", "action" ],
+    "nl": [ "kerst", "led", "verlichting", "cluster", "action"]
+  },
+  "permissions": [
+  ],
+  "images": {
+    "large": "/assets/images/large.png",
+    "small": "/assets/images/small.png"
+  },
+  "author": {
+    "name": "Robin Gruijter",
+    "email": "gruijter@hotmail.com"
+  },
+  "copyright": "Robin de Gruijter (gruijter@hotmail.com)",
+  "license": " GPL-3.0-or-later",
+  "contributing": {
+    "donate": {
+      "paypal": {
+        "username": "gruijter"
+      }
+    }
+  },
+  "bugs": {
+  "url": "https://github.com/gruijter/com.gruijter.clusterlights/issues"
+  },
+  "homeyCommunityTopicId": 0,
+  "gtin": [""],
+  "drivers": [
+    {
+      "id": "cluster_light",
+      "name": {
+        "en": "Cluster light",
+        "nl": "Cluster light"
+      },
+      "class": "light",
+      "capabilities": [ "onoff", "dim" ],
+      "pair": [
+        {
+          "id": "list_devices",
+          "template": "list_devices",
+          "navigation": {
+            "next": "add_devices"
+          }
+        },
+        {
+          "id": "add_devices",
+          "template": "add_devices"
+        }
+      ]
+    }
+  ]
+}
