@@ -20,6 +20,7 @@ along with com.gruijter.clusterlights. If not, see <http://www.gnu.org/licenses/
 'use strict';
 
 const Homey = require('homey');
+const Logger = require('./captureLogs.js');
 
 const ble = Homey.ManagerBLE;
 
@@ -71,8 +72,40 @@ async function discoverBle() {
 class MyApp extends Homey.App {
 
 	onInit() {
-		this.log('MyApp is running...');
+		this.logger = new Logger('clusterLights', 200);
+		this.log('Cluster Lights App is running!');
+
+		// register some listeners
+		process.on('unhandledRejection', (error) => {
+			this.error('unhandledRejection! ', error);
+		});
+		process.on('uncaughtException', (error) => {
+			this.error('uncaughtException! ', error);
+		});
+		Homey
+			.on('unload', () => {
+				this.log('app unload called');
+				// save logs to persistant storage
+				this.logger.saveLogs();
+			})
+			.on('memwarn', () => {
+				this.log('memwarn!');
+			});
+		// do garbage collection every 10 minutes
+		this.intervalIdGc = setInterval(() => {
+			global.gc();
+		}, 1000 * 60 * 10);
+
 		// discoverBle();
+	}
+
+	//  stuff for frontend API
+	deleteLogs() {
+		return this.logger.deleteLogs();
+	}
+
+	getLogs() {
+		return this.logger.logArray;
 	}
 
 }

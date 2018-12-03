@@ -27,12 +27,12 @@ const LEDservice = 'fff0';
 const LEDCharacteristic = 'fff1';
 const on = Buffer.from('01010101', 'hex');
 const off = Buffer.from('01010100', 'hex');
-// const dimMin = Buffer.from('03010101', 'hex');	// decimal 1
-// const dimMax = Buffer.from('03010163', 'hex');	// decimal 99
 const dimBase = '030101';
 // const onOffBase = '010101';
 
 function dimLevel(value) {
+	// const dimMin = Buffer.from('03010101', 'hex');	// decimal 1
+	// const dimMax = Buffer.from('03010163', 'hex');	// decimal 99
 	if ((value < 0) || (value > 1)) {
 		return new Error('value must be between 0 and 1');
 	}
@@ -67,17 +67,12 @@ class ClusterLightDevice extends Homey.Device {
 				console.log('not connected to peripheral; connecting now...');
 				this.peripheral = await this.advertisement.connect();
 			}
-			// console.log('peripheral after connect');
-			// console.log(this.peripheral);
-			// console.log('ledservice before connect');
-			// console.log(this.LEDservice);
 			// discoverAllServicesAndCharacteristics
 			const services = await this.peripheral.discoverAllServicesAndCharacteristics();
 			// get the service in alternative way
 			const service = services.filter(serv => serv.uuid === LEDservice);
 			this.LEDservice = service[0];
-			// console.log('ledservice after connect');
-			// console.log(this.LEDservice);
+
 			this.setAvailable();
 			return Promise.resolve(service[0]);
 		} catch (error) {
@@ -106,14 +101,25 @@ class ClusterLightDevice extends Homey.Device {
 			await this.connect();
 			while (this.commandQueue.length > 0) {
 				const comm = this.commandQueue.shift();
-				this.LEDservice.write(LEDCharacteristic, comm); // probably need to do await here....
+				this.LEDservice.write(LEDCharacteristic, comm); // do I need to do await here?
 			}
 			await this.disconnect();
-			this.busy = false;
+			this.busy = false;	// or before disconnect?
 			return Promise.resolve(true);
 		} catch (error) {
 			this.log(error);
 			return Promise.reject(error);
+		}
+	}
+
+	async poll() {
+		try {
+			console.log('polling now');
+			if (!this.getAvailable()) {
+				await this.findAdvertisement();
+			}
+		} catch (error) {
+			this.log(error);
 		}
 	}
 
@@ -212,13 +218,10 @@ class ClusterLightDevice extends Homey.Device {
 			// 		callback(null, true);
 			// 	});
 
-			// // start polling router for info
-			// this.intervalIdDevicePoll = setInterval(() => {
-			// 	try {
-			// 		// get new routerdata and update the state
-			// 		this.updateRouterDeviceState();
-			// 	} catch (error) { this.log('intervalIdDevicePoll error', error); }
-			// }, 1000 * settings.polling_interval);
+			// start polling device for status info
+			this.intervalIdDevicePoll = setInterval(() => {
+				this.poll();
+			}, 1000 * 15);	// 15 seconds poll
 		} catch (error) {
 			this.log(error);
 		}
@@ -235,20 +238,6 @@ class ClusterLightDevice extends Homey.Device {
 		// stop polling
 		clearInterval(this.intervalIdDevicePoll);
 		this.log('light deleted as device');
-	}
-
-	// this method is called when the user has changed the device's settings in Homey.
-	onSettings(oldSettingsObj, newSettingsObj, changedKeysArr, callback) {
-		// first stop polling the device, then start init after short delay
-		clearInterval(this.intervalIdDevicePoll);
-		this.log('light device settings changed');
-		this.setAvailable()
-			.catch(this.error);
-		// setTimeout(() => {
-		// 	this.onInit();
-		// }, 10000);
-		// do callback to confirm settings change
-		return callback(null, true);
 	}
 
 }
