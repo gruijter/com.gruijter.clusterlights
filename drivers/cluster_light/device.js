@@ -22,9 +22,24 @@ along with com.gruijter.clusterlights. If not, see <http://www.gnu.org/licenses/
 const Homey = require('homey');
 
 const LEDservice = 'fff0';
-const onOffCharacteristic = 'fff1';
+const LEDCharacteristic = 'fff1';
 const on = Buffer.from('01010101', 'hex');
 const off = Buffer.from('01010100', 'hex');
+// const dimMin = Buffer.from('03010101', 'hex');	// decimal 1
+// const dimMax = Buffer.from('03010163', 'hex');	// decimal 99
+const dimBase = '030101';
+// const onOffBase = '010101';
+
+function dimLevel(value) {
+	if ((value < 0) || (value > 1)) {
+		return new Error('value must be between 0 and 1');
+	}
+	const dimDecimal = parseInt((10 + value * 89), 10); // level between 10 and 99
+	const dimHex = (dimDecimal).toString(16).padStart(2, '0');
+	const levelBuffer = Buffer.from(dimBase + dimHex, 'hex');
+	return levelBuffer;
+}
+
 
 class ClusterLightDevice extends Homey.Device {
 
@@ -49,7 +64,7 @@ class ClusterLightDevice extends Homey.Device {
 			// discoverAllServicesAndCharacteristics
 			const services = await this.peripheral.discoverAllServicesAndCharacteristics();
 			// get the service in alternative way
-			const service = services.filter(serv => serv.uuid === 'fff0');
+			const service = services.filter(serv => serv.uuid === LEDservice);
 			return Promise.resolve(service[0]);
 		} catch (error) {
 			this.log(error);
@@ -75,11 +90,18 @@ class ClusterLightDevice extends Homey.Device {
 				// await service.write('fff1', Buffer.from('01010100', 'hex'));
 				if (value) {
 					// write command 'on' to the peripheral
-					await service.write('fff1', on);
+					await service.write(LEDCharacteristic, on);
 				} else {
 					// write command 'off' to the peripheral
-					await service.write('fff1', off);
+					await service.write(LEDCharacteristic, off);
 				}
+				await this.disconnect();
+				return Promise.resolve(true);
+			});
+			this.registerCapabilityListener('dim', async (value) => {
+				this.log(`dim requested: ${value}`);
+				const service = await this.connect();
+				await service.write(LEDCharacteristic, dimLevel(value));
 				await this.disconnect();
 				return Promise.resolve(true);
 			});

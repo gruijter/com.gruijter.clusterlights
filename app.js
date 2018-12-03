@@ -53,8 +53,11 @@ async function discoverBle() {
 		// // write command 'off' to the peripheral
 		// await service[0].write('fff1', Buffer.from('01010100', 'hex'));
 
-		// write command 'on' to the peripheral
-		await service[0].write('fff1', Buffer.from('01010101', 'hex'));
+		// // write command 'on' to the peripheral
+		// await service[0].write('fff1', Buffer.from('01010101', 'hex'));
+
+		// write command 'dim to 100%' to the peripheral
+		await service[0].write('fff1', Buffer.from('03010163', 'hex'));
 
 		// disconnect the peripheral:
 		await peripheral.disconnect();
