@@ -17,6 +17,8 @@ You should have received a copy of the GNU General Public License
 along with com.gruijter.clusterlights. If not, see <http://www.gnu.org/licenses/>.
 */
 
+/* eslint-disable prefer-destructuring */
+
 'use strict';
 
 const Homey = require('homey');
@@ -51,7 +53,7 @@ class ClusterLightDevice extends Homey.Device {
 			return Promise.resolve(advertisement);
 		} catch (error) {
 			// need to keep retrying somehow
-			this.setUnavailable('light not in range');
+			this.setUnavailable('light could no tbe found (out of in range?)');
 			return Promise.reject(error);
 		}
 	}
@@ -59,22 +61,60 @@ class ClusterLightDevice extends Homey.Device {
 	// connect to the peripheral, and return the service
 	async connect() {
 		try {
+			if (this.peripheral && this.peripheral.isConnected) {
+				console.log('already connected to peripheral');
+			} else {
+				console.log('not connected to peripheral; connecting now...');
+				this.peripheral = await this.advertisement.connect();
+			}
+			// console.log('peripheral after connect');
 			// console.log(this.peripheral);
-			this.peripheral = await this.advertisement.connect();
+			// console.log('ledservice before connect');
+			// console.log(this.LEDservice);
 			// discoverAllServicesAndCharacteristics
 			const services = await this.peripheral.discoverAllServicesAndCharacteristics();
 			// get the service in alternative way
 			const service = services.filter(serv => serv.uuid === LEDservice);
+			this.LEDservice = service[0];
+			// console.log('ledservice after connect');
+			// console.log(this.LEDservice);
+			this.setAvailable();
 			return Promise.resolve(service[0]);
 		} catch (error) {
-			this.log(error);
+			this.setUnavailable('could not connect to light');
 			this.disconnect();
 			return Promise.reject(error);
 		}
 	}
 
 	async disconnect() {
-		return Promise.resolve(await this.peripheral.disconnect());
+		if (this.peripheral && this.peripheral.isConnected) {
+			console.log('disconnecting from peripheral now...');
+			await this.peripheral.disconnect();
+		}
+		return Promise.resolve(true);
+	}
+
+	async sendCommand(command) {
+		try {
+			this.commandQueue.push(command);
+			if (this.busy) {
+				console.log('putting command in the queue');
+				return Promise.resolve(true);
+			}
+			this.busy = true;
+			await this.connect();
+			while (this.commandQueue.length > 0) {
+				const comm = this.commandQueue.shift();
+				this.LEDservice.write(LEDCharacteristic, comm); // probably need to do await here....
+			}
+			await this.disconnect();
+			this.busy = false;
+			return Promise.resolve(true);
+		} catch (error) {
+			this.log(error);
+			return Promise.reject(error);
+		}
 	}
 
 	// this method is called when the Device is inited
@@ -82,28 +122,34 @@ class ClusterLightDevice extends Homey.Device {
 		try {
 			this.log('device init: ', this.getName(), 'id:', this.getData().id);
 			this.advertisement = await this.findAdvertisement();	// links to the device
-			this.log(this.advertisement);
+			// this.log(this.advertisement);
 			this.peripheral = undefined;	// is a connected device
+			this.LEDservice = undefined;	// is a connected service on the peripheral
+			this.commandQueue = [];	// empty command queue
+			this.busy = false; // no commands are in the queue
 			this.registerCapabilityListener('onoff', async (value) => {
-				this.log(`on/off requested: ${value}`);
-				const service = await this.connect();
-				// await service.write('fff1', Buffer.from('01010100', 'hex'));
-				if (value) {
-					// write command 'on' to the peripheral
-					await service.write(LEDCharacteristic, on);
-				} else {
-					// write command 'off' to the peripheral
-					await service.write(LEDCharacteristic, off);
+				try {
+					this.log(`on/off requested: ${value}`);
+					if (value) {
+						// write command 'on' to the peripheral
+						await this.sendCommand(on);
+					} else {
+						// write command 'off' to the peripheral
+						await this.sendCommand(off);
+					}
+					return Promise.resolve(true);
+				} catch (error) {
+					return Promise.reject(error);
 				}
-				await this.disconnect();
-				return Promise.resolve(true);
 			});
 			this.registerCapabilityListener('dim', async (value) => {
-				this.log(`dim requested: ${value}`);
-				const service = await this.connect();
-				await service.write(LEDCharacteristic, dimLevel(value));
-				await this.disconnect();
-				return Promise.resolve(true);
+				try {
+					this.log(`dim requested: ${value}`);
+					await this.sendCommand(dimLevel(value));
+					return Promise.resolve(true);
+				} catch (error) {
+					return Promise.reject(error);
+				}
 			});
 
 			// // init some values
