@@ -1,6 +1,6 @@
 {
   "id": "com.gruijter.clusterlights",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "compatibility": ">=1.5.0",
   "sdk": 2,
   "name": {
@@ -39,7 +39,7 @@
   "bugs": {
   "url": "https://github.com/gruijter/com.gruijter.clusterlights/issues"
   },
-  "homeyCommunityTopicId": 0,
+  "homeyCommunityTopicId": 4839,
   "gtin": ["8719632923589", "8719202334944", "8800159746246", "8719202336085"],
   "capabilities": {
     "mode": {
@@ -166,5 +166,119 @@
         }
       ]
     }
-  ]
+  ],
+	"flow": {
+    "triggers": [
+      {
+        "id": "mode_changed",
+        "title": {
+          "en": "Mode changed",
+          "nl": "Effect veranderd"
+        },
+        "args": [
+          {
+            "name": "cluster_light",
+            "type": "device",
+            "filter": "driver_id=cluster_light"
+          }
+        ],
+        "tokens": [
+          {
+            "name": "mode",
+            "type": "string",
+            "title": {
+              "en": "mode",
+              "nl": "effect"
+            },
+            "example": "twinkle"
+          }
+        ]
+      }
+    ],
+		"actions": [
+      {
+        "id": "change_random_mode",
+        "title": {
+          "en": "Random mode",
+          "nl": "Willekeurig effect"
+        },
+        "args": [
+          {
+            "name": "cluster_light",
+            "type": "device",
+            "filter": "driver_id=cluster_light"
+          }
+        ]
+      },
+      {
+        "id": "change_mode",
+        "title": {
+          "en": "Mode",
+          "nl": "Effect"
+        },
+        "args": [
+          {
+            "name": "cluster_light",
+            "type": "device",
+            "filter": "driver_id=cluster_light"
+          },
+          {
+            "name": "mode_dropdown",
+            "type": "dropdown",
+            "values": [
+              {
+                "id": "wave",
+                "label": {
+                  "en": "Wave",
+                  "nl": "Golven"
+                }
+              },
+              {
+                "id": "phase",
+                "label": {
+                  "en": "Phase",
+                  "nl": "Faseren"
+                }
+              },
+              {
+                "id": "phasedFadeAway",
+                "label": {
+                  "en": "Phased fade",
+                  "nl": "Fase vervagen"
+                }
+              },
+              {
+                "id": "phasedTwinkle",
+                "label": {
+                  "en": "Phased twinkle",
+                  "nl": "fase twinkel"
+                }
+              },
+              {
+                "id": "fadeAway",
+                "label": {
+                  "en": "Fade away",
+                  "nl": "Vervagen"
+                }
+              },
+              {
+                "id": "fastTwinkle",
+                "label": {
+                  "en": "Fast Twinkle",
+                  "nl": "Snel twinkel"
+                }
+              },
+              {
+                "id": "stayOn",
+                "label": {
+                  "en": "Stay on",
+                  "nl": "Continu aan"
+                }
+              }
+            ]
+          }
+        ]
+      }
+		]
+	}
 }

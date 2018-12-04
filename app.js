@@ -52,7 +52,7 @@ class MyApp extends Homey.App {
 			global.gc();
 		}, 1000 * 60 * 10);
 
-		// discoverBle();
+		// testBle();
 	}
 
 	//  stuff for frontend API
@@ -69,7 +69,7 @@ class MyApp extends Homey.App {
 module.exports = MyApp;
 
 
-async function discoverBle() {
+async function testBle() {
 	try {
 		const ble = Homey.ManagerBLE;
 
@@ -87,12 +87,20 @@ async function discoverBle() {
 		const sac = await peripheral.discoverAllServicesAndCharacteristics();
 		// console.log(sac);
 		// await setTimeoutPromise(1000, 'waiting is done');
+
+		// discoverAllServices
+		// const services = await peripheral.discoverServices('fff0');
+		// console.log(services);
+
 		const service = await peripheral.getService('fff0');
 		console.log(service);
 
-		// await setTimeoutPromise(1000, 'waiting is done');
-		const characteristic = service.getCharacteristic('fff1');
-		console.log(characteristic);
+		// const char = service.discoverCharacteristics('fff1');
+		// console.log(char);
+
+		// // await setTimeoutPromise(1000, 'waiting is done');
+		// const characteristic = service.getCharacteristic('fff1');
+		// console.log(characteristic);
 
 		// write command 'off' to the characteristic
 		await service.write('fff1', Buffer.from('01010100', 'hex'));

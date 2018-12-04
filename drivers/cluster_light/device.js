@@ -143,99 +143,7 @@ class ClusterLightDevice extends Homey.Device {
 			this.commandQueue = [];	// empty command queue
 			this.busy = false; // no commands are in the queue
 			await this.attachPeripheral();	// find and attach the peripheral
-			this.registerCapabilityListener('onoff', async (value) => {
-				try {
-					this.log(`on/off requested: ${value}`);
-					if (value) {
-						// write command 'on' to the peripheral
-						await this.sendCommand(on);
-					} else {
-						// write command 'off' to the peripheral
-						await this.sendCommand(off);
-					}
-					return Promise.resolve(true);
-				} catch (error) {
-					return Promise.reject(error);
-				}
-			});
-			this.registerCapabilityListener('dim', async (value) => {
-				try {
-					this.log(`dim requested: ${value}`);
-					await this.sendCommand(dimLevel(value));
-					return Promise.resolve(true);
-				} catch (error) {
-					return Promise.reject(error);
-				}
-			});
-			this.registerCapabilityListener('mode', async (value) => {
-				try {
-					this.log(`mode change requested: ${value}`);
-					await this.sendCommand(mode[value]);
-					return Promise.resolve(true);
-				} catch (error) {
-					return Promise.reject(error);
-				}
-			});
-			// // init some values
-			// this._driver = this.getDriver();
-			// // create router session
-			// const settings = this.getSettings();
-
-
-			// // register trigger flow cards
-			// this.speedChangedTrigger = new Homey.FlowCardTriggerDevice('uldl_speed_changed')
-			// 	.register();
-
-			// // register condition flow flowcards
-			// const deviceOnlineCondition = new Homey.FlowCardCondition('device_online');
-			// deviceOnlineCondition.register()
-			// 	.registerRunListener((args) => {
-			// 		if (Object.prototype.hasOwnProperty.call(args, 'NetgearDevice')) {
-			// 			let deviceOnline = false;
-			// 			if (Object.prototype.hasOwnProperty.call(args.NetgearDevice.knownDevices, args.mac.name)) {
-			// 				deviceOnline = args.NetgearDevice.knownDevices[args.mac.name].online;	// true or false
-			// 			}
-			// 			return Promise.resolve(deviceOnline);
-			// 		}
-			// 		return Promise.reject(Error('The netgear device is unknown or not ready'));
-			// 	})
-			// 	.getArgument('mac')
-			// 	.registerAutocompleteListener((query) => {
-			// 		let results = this._driver.makeAutocompleteList.call(this);
-			// 		results = results.filter((result) => {		// filter for query on MAC and Name
-			// 			const macFound = result.name.toLowerCase().indexOf(query.toLowerCase()) > -1;
-			// 			const nameFound = result.description.toLowerCase().indexOf(query.toLowerCase()) > -1;
-			// 			return macFound || nameFound;
-			// 		});
-			// 		return Promise.resolve(results);
-			// 	});
-
-			// // register action flow cards
-			// const blockDevice = new Homey.FlowCardAction('block_device');
-			// blockDevice.register()
-			// 	.on('run', async (args, state, callback) => {
-			// 		await this._driver.blockOrAllow.call(this, args.mac.name, 'Block');
-			// 		// this.log(args.mac.name);
-			// 		callback(null, true);
-			// 	})
-			// 	.getArgument('mac')
-			// 	.registerAutocompleteListener((query) => {
-			// 		let results = this._driver.makeAutocompleteList.call(this);
-			// 		results = results.filter((result) => {		// filter for query on MAC and Name
-			// 			const macFound = result.name.toLowerCase().indexOf(query.toLowerCase()) > -1;
-			// 			const nameFound = result.description.toLowerCase().indexOf(query.toLowerCase()) > -1;
-			// 			return macFound || nameFound;
-			// 		});
-			// 		return Promise.resolve(results);
-			// 	});
-
-			// const reboot = new Homey.FlowCardAction('reboot');
-			// reboot.register()
-			// 	.on('run', (args, state, callback) => {
-			// 		this._driver.reboot.call(this);
-			// 		callback(null, true);
-			// 	});
-
+			this.registerFlowcardsAndListeners();
 			// start polling device for status info
 			this.intervalIdDevicePoll = setInterval(() => {
 				this.poll();
@@ -243,7 +151,6 @@ class ClusterLightDevice extends Homey.Device {
 		} catch (error) {
 			this.log(error);
 		}
-
 	}
 
 	// this method is called when the Device is added
@@ -256,6 +163,72 @@ class ClusterLightDevice extends Homey.Device {
 		// stop polling
 		clearInterval(this.intervalIdDevicePoll);
 		this.log('light deleted as device');
+	}
+
+	registerFlowcardsAndListeners() {
+		// register trigger flow cards
+		this.modeChangedTrigger = new Homey.FlowCardTrigger('mode_changed')
+			.register();
+		// register action flow cards
+		this.changeModeAction = new Homey.FlowCardAction('change_mode')
+			.register()
+			.on('run', async (args, state, callback) => {
+				this.log(`mode change requested via flow: ${args.mode_dropdown}`);
+				await this.sendCommand(mode[args.mode_dropdown]);
+				callback(null, true);
+			});
+		this.changeRandomModeAction = new Homey.FlowCardAction('change_random_mode')
+			.register()
+			.on('run', async (args, state, callback) => {
+				const keys = Object.keys(mode);
+				const randomKey = keys[Math.floor(Math.random() * keys.length)];
+				const randomMode = mode[randomKey];
+				this.log(`random mode change requested via flow: ${randomKey}`);
+				await this.sendCommand(randomMode);
+				callback(null, true);
+			});
+		// registrer the capability listeners
+		this.registerCapabilityListener('onoff', async (value) => {
+			try {
+				this.log(`on/off requested: ${value}`);
+				if (value) {
+					// write command 'on' to the peripheral
+					await this.sendCommand(on);
+				} else {
+					// write command 'off' to the peripheral
+					await this.sendCommand(off);
+				}
+				return Promise.resolve(true);
+			} catch (error) {
+				return Promise.reject(error);
+			}
+		});
+		this.registerCapabilityListener('dim', async (value) => {
+			try {
+				this.log(`dim requested: ${value}`);
+				await this.sendCommand(dimLevel(value));
+				return Promise.resolve(true);
+			} catch (error) {
+				return Promise.reject(error);
+			}
+		});
+		this.registerCapabilityListener('mode', async (value) => {
+			try {
+				this.log(`mode change requested: ${value}`);
+				await this.sendCommand(mode[value]);
+				const tokens = {
+					mode: value,
+				};
+				this.modeChangedTrigger
+					.trigger(this, tokens)
+					.catch((error) => {
+						this.error('trigger error', error);
+					});
+				return Promise.resolve(true);
+			} catch (error) {
+				return Promise.reject(error);
+			}
+		});
 	}
 
 }
