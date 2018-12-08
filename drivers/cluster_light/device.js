@@ -51,42 +51,44 @@ function dimLevel(value) {
 	return levelBuffer;
 }
 
-
 class ClusterLightDevice extends Homey.Device {
 
+	// timer function to disconnect after connection inactivity
+	timerStop() {
+		if (this.connectionTimer) {
+			clearTimeout(this.connectionTimer);
+			this.connectionTimer = null;
+		}
+	}
 
-	async attachPeripheral() {
+	timerStart(t) {
+		this.timerStop();
+		if (t > 0) {
+			this.connectionTimer = setTimeout(() => {
+				this.connectionTimer = null;
+				this.disconnect();
+			}, t * 1000);
+		}
+	}
+
+	// connect to the peripheral, and return the peripheral
+	async connect() {
 		try {
+			if (this.connectionTimer) {
+				this.timerStart(30);	// start/reset 30 seconds connection
+				return Promise.resolve(this.peripheral);
+			}
+			this.timerStart(30);	// start/reset 30 seconds connection
+			this.log('connecting to peripheral');
 			this.advertisement = await Homey.ManagerBLE.find(this.getData().id);
 			this.peripheral = await this.advertisement.connect();
 			await this.peripheral.discoverAllServicesAndCharacteristics();
 			this.LEDservice = await this.peripheral.getService(LEDserviceUuid);
-			await this.peripheral.disconnect();
-			this.setAvailable();
-			return Promise.resolve(true);
-		} catch (error) {
-			this.setUnavailable('light could no tbe found (out of in range?)');
-			this.disconnect();
-			return Promise.reject(error);
-		}
-	}
-
-	// connect to the peripheral, and return the service
-	async connect() {
-		try {
-			if (!this.peripheral) {
-				console.log('need to attach device first');
-				await this.attachPeripheral();
-			}
-			const connected = await this.peripheral.assertConnected()
-				.catch(error => true);
-			await this.peripheral.discoverAllServicesAndCharacteristics();
-			this.LEDservice = await this.peripheral.getService(LEDserviceUuid);
-			this.setAvailable();
-			return Promise.resolve(connected);
+			// this.setAvailable();
+			return Promise.resolve(this.peripheral);
 		} catch (error) {
 			this.log('error connecting');
-			this.setUnavailable('could not connect to light');
+			// this.setUnavailable('could not connect to light');
 			this.disconnect();
 			return Promise.reject(error);
 		}
@@ -94,7 +96,7 @@ class ClusterLightDevice extends Homey.Device {
 
 	async disconnect() {
 		if (this.peripheral && this.peripheral.isConnected) {
-			console.log('disconnecting from peripheral now...');
+			this.log('disconnecting from peripheral');
 			await this.peripheral.disconnect();
 		}
 		return Promise.resolve(true);
@@ -103,18 +105,11 @@ class ClusterLightDevice extends Homey.Device {
 	async sendCommand(command) {
 		try {
 			this.commandQueue.push(command);
-			if (this.busy) {
-				console.log('putting command in the queue');
-				return Promise.resolve(true);
-			}
-			this.busy = true;
 			await this.connect();
 			while (this.commandQueue.length > 0) {
 				const comm = this.commandQueue.shift();
 				this.LEDservice.write(LEDControlCharacteristicUuid, comm); // do I need to do await here?
 			}
-			await this.disconnect();
-			this.busy = false;	// or before disconnect?
 			return Promise.resolve(true);
 		} catch (error) {
 			this.log(error);
@@ -122,32 +117,33 @@ class ClusterLightDevice extends Homey.Device {
 		}
 	}
 
-	async poll() {
-		try {
-			// console.log('polling now');
-			if (!this.getAvailable()) {
-				await this.attachPeripheral();
-			}
-		} catch (error) {
-			this.log(error);
-		}
-	}
-
 	// this method is called when the Device is inited
 	async onInit() {
 		try {
 			this.log('device init: ', this.getName(), 'id:', this.getData().id);
+			this.settings = this.getSettings();
+			// migrate from v0.2.0 app
+			if (this.settings === {}) {
+				this.settings = {
+					wave: true,
+					phase: true,
+					phasedFadeAway: true,
+					phasedTwinkle: true,
+					fadeAway: true,
+					fastTwinkle: true,
+					stayOn: true,
+				};
+				this.setSettings(this.settings)
+					.then(this.log('settings migrated from v0.2.0 app'))
+					.catch(this.error);
+			}
+			this.connectionTimer = null;
 			this.advertisement = undefined;	// is a link to the device
 			this.peripheral = undefined;	// is a device (connected or unconnected)
 			this.LEDservice = undefined;	// is a service on the peripheral
 			this.commandQueue = [];	// empty command queue
-			this.busy = false; // no commands are in the queue
-			await this.attachPeripheral();	// find and attach the peripheral
-			this.registerFlowcardsAndListeners();
-			// start polling device for status info
-			this.intervalIdDevicePoll = setInterval(() => {
-				this.poll();
-			}, 1000 * 20);	// 20 seconds poll
+			this.registerFlowcardsAndListeners();	// duh
+			await this.connect();	// find and connect the peripheral
 		} catch (error) {
 			this.log(error);
 		}
@@ -165,6 +161,11 @@ class ClusterLightDevice extends Homey.Device {
 		this.log('light deleted as device');
 	}
 
+	onSettings(oldSettingsObj, newSettingsObj, changedKeysArr, callback) {
+		this.log('device settings were changed by the user');
+		callback(null, true);
+	}
+
 	registerFlowcardsAndListeners() {
 		// register trigger flow cards
 		this.modeChangedTrigger = new Homey.FlowCardTrigger('mode_changed')
@@ -180,12 +181,15 @@ class ClusterLightDevice extends Homey.Device {
 		this.changeRandomModeAction = new Homey.FlowCardAction('change_random_mode')
 			.register()
 			.on('run', async (args, state, callback) => {
-				const keys = Object.keys(mode);
-				const randomKey = keys[Math.floor(Math.random() * keys.length)];
-				const randomMode = mode[randomKey];
-				this.log(`random mode change requested via flow: ${randomKey}`);
+				const modesArray = Object.entries(this.settings).filter(key => key[1]);
+				if (modesArray.length < 1) {
+					return callback(null, true);
+				}
+				const randomModeKey = modesArray[Math.floor(Math.random() * modesArray.length)][0];
+				const randomMode = mode[randomModeKey];
+				this.log(`random mode change requested via flow: ${randomModeKey}`);
 				await this.sendCommand(randomMode);
-				callback(null, true);
+				return callback(null, true);
 			});
 		// registrer the capability listeners
 		this.registerCapabilityListener('onoff', async (value) => {

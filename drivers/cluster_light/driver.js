@@ -35,9 +35,9 @@ class ClusterLightDriver extends Homey.Driver {
 			const list = await Homey.ManagerBLE.discover(['fff0']);
 			const pairList = list.map((light) => {
 				const device = {
-					name: `${light.address}_${light.localName}`,
+					name: `${light.uuid}`,
 					data: { id: light.uuid },
-				}
+				};
 				return device;
 			});
 			return Promise.resolve(pairList);

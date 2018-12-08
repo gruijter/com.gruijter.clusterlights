@@ -1,8 +1,10 @@
 {
   "id": "com.gruijter.clusterlights",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "compatibility": ">=1.5.0",
   "sdk": 2,
+  "permissions": [
+  ],
   "name": {
     "en": "BLE Christmas Clusterlights"
   },
@@ -17,8 +19,6 @@
     "en": [ "christmas", "xmas", "led", "lights", "cluster", "bluetooth", "BLE" ],
     "nl": [ "kerst", "kerstmis", "led", "verlichting", "cluster", "bluetooth", "BLE"]
   },
-  "permissions": [
-  ],
   "images": {
     "large": "/assets/images/large.jpg",
     "small": "/assets/images/small.jpg"
@@ -163,6 +163,80 @@
         {
           "id": "add_devices",
           "template": "add_devices"
+        }
+      ],
+      "settings": [
+        {
+          "type": "group",
+          "label": {
+            "en": "Random mode",
+            "nl": "Willekeurig effect"
+          },
+          "children": [
+            {
+              "id": "wave",
+              "type": "checkbox",
+              "value": true,
+              "label": {
+                "en": "Wave",
+                "nl": "Golven"
+              }
+            },
+            {
+              "id": "phase",
+              "type": "checkbox",
+              "value": true,
+              "label": {
+                "en": "Phase",
+                "nl": "Faseren"
+              }
+            },
+            {
+              "id": "phasedFadeAway",
+              "type": "checkbox",
+              "value": true,
+              "label": {
+                "en": "Phased fade",
+                "nl": "Fase vervagen"
+              }
+            },
+            {
+              "id": "phasedTwinkle",
+              "type": "checkbox",
+              "value": true,
+              "label": {
+                "en": "Phased twinkle",
+                "nl": "fase twinkel"
+              }
+            },
+            {
+              "id": "fadeAway",
+              "type": "checkbox",
+              "value": true,
+              "label": {
+                "en": "Fade away",
+                "nl": "Vervagen"
+              }
+            },
+            {
+              "id": "fastTwinkle",
+              "type": "checkbox",
+              "value": true,
+              "label": {
+                "en": "Fast Twinkle",
+                "nl": "Snel twinkel"
+              }
+            },
+            {
+              "id": "stayOn",
+              "type": "checkbox",
+              "value": true,
+              "label": {
+                "en": "Stay on",
+                "nl": "Continu aan"
+              }
+            }
+          ]
         }
       ]
     }

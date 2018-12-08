@@ -20,10 +20,10 @@ along with com.gruijter.clusterlights. If not, see <http://www.gnu.org/licenses/
 'use strict';
 
 const Homey = require('homey');
+// const util = require('util');
 const Logger = require('./captureLogs.js');
-const util = require('util');
 
-const setTimeoutPromise = util.promisify(setTimeout);
+// const setTimeoutPromise = util.promisify(setTimeout);
 
 class MyApp extends Homey.App {
 
@@ -47,10 +47,10 @@ class MyApp extends Homey.App {
 			.on('memwarn', () => {
 				this.log('memwarn!');
 			});
-		// do garbage collection every 10 minutes
-		this.intervalIdGc = setInterval(() => {
-			global.gc();
-		}, 1000 * 60 * 10);
+		// // do garbage collection every 10 minutes
+		// this.intervalIdGc = setInterval(() => {
+		// 	global.gc();
+		// }, 1000 * 60 * 10);
 
 		// testBle();
 	}
@@ -103,7 +103,7 @@ async function testBle() {
 		// console.log(characteristic);
 
 		// write command 'off' to the characteristic
-		await service.write('fff1', Buffer.from('01010100', 'hex'));
+		await service.write('fff1', Buffer.from('01010101', 'hex'));
 
 		// // get the service in alternative way
 		// const service = sac.filter(serv => serv.uuid === 'fff0');
