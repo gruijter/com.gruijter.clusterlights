@@ -22,14 +22,14 @@ along with com.gruijter.clusterlights. If not, see <http://www.gnu.org/licenses/
 const BLELightDriver = require('../../lib/ble_light_driver.js');
 
 const driverSpecifics = {
-	LEDserviceUuid: 'fff0',
+	LEDserviceUuid: '1000',
 };
 
-class ClusterLightDriver extends BLELightDriver {
+class LumineoDriver extends BLELightDriver {
 	onInit() {
-		this.log('ClusterLightDriver onInit');
+		this.log('LumineoDriver onInit');
 		this.ds = driverSpecifics;
 	}
 }
 
-module.exports = ClusterLightDriver;
+module.exports = LumineoDriver;

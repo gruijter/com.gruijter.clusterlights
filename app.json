@@ -1,24 +1,24 @@
 {
   "id": "com.gruijter.clusterlights",
-  "version": "0.4.0",
-  "compatibility": ">=1.5.0",
+  "version": "0.5.1",
+  "compatibility": ">=2.0.0",
   "sdk": 2,
   "permissions": [
     "homey:wireless:ble"
   ],
   "name": {
-    "en": "BLE Christmas Clusterlights"
+    "en": "BLE Christmas Lights"
   },
   "description": {
-    "en": "Homey app for bluetooth LED cluster lights",
-    "nl": "Homey app voor bluetooth LED clusterverlichting"
+    "en": "Homey app for bluetooth LED lights",
+    "nl": "Homey app voor bluetooth LED verlichting"
   },
   "category": [
     "lights"
   ],
   "tags": {
-    "en": [ "christmas", "xmas", "led", "lights", "cluster", "bluetooth", "BLE" ],
-    "nl": [ "kerst", "kerstmis", "led", "verlichting", "cluster", "bluetooth", "BLE"]
+    "en": [ "christmas", "xmas", "led", "lights", "cluster", "bluetooth", "BLE", "novolink", "lumineo" ],
+    "nl": [ "kerst", "kerstmis", "led", "verlichting", "cluster", "bluetooth", "BLE", "novolink", "lumineo"]
   },
   "images": {
     "large": "/assets/images/large.jpg",
@@ -41,7 +41,7 @@
   "url": "https://github.com/gruijter/com.gruijter.clusterlights/issues"
   },
   "homeyCommunityTopicId": 4839,
-  "gtin": ["8719632923589", "8719202334944", "8800159746246", "8719202336085"],
+  "gtin": ["8719632923589", "8719202334944", "8800159746246", "8719202336085", "8718533914313"],
   "capabilities": {
     "mode": {
       "type": "enum",
@@ -240,6 +240,138 @@
           ]
         }
       ]
+    },
+    {
+      "id": "lumineo",
+      "name": {
+        "en": "Lumineo",
+        "nl": "Lumineo"
+      },
+      "images": {
+        "large": "drivers/lumineo/assets/images/large.jpg",
+        "small": "drivers/lumineo/assets/images/small.jpg"
+       },
+      "class": "light",
+      "capabilities": [ "onoff", "dim", "mode" ],
+      "capabilitiesOptions": {
+				"mode": {
+          "title": {
+            "en": "mode",
+            "nl": "effect"
+          },
+          "showTitle": true
+				}
+			},
+      "mobile": {
+        "components": [
+          {
+            "id": "icon",
+            "capabilities": [ "onoff"]
+          },
+          {
+            "id": "slider",
+            "capabilities": [ "dim" ]
+          },
+          {
+            "id": "picker",
+            "capabilities": [ "mode" ],
+            "options": {
+              "title": {
+                "en": "mode",
+                "nl": "effect"
+              },
+              "showTitle": true
+            }
+          }
+        ]
+      },
+      "pair": [
+        {
+          "id": "list_devices",
+          "template": "list_devices",
+          "navigation": {
+            "next": "add_devices"
+          }
+        },
+        {
+          "id": "add_devices",
+          "template": "add_devices"
+        }
+      ],
+      "settings": [
+        {
+          "type": "group",
+          "label": {
+            "en": "Random mode",
+            "nl": "Willekeurig effect"
+          },
+          "children": [
+            {
+              "id": "wave",
+              "type": "checkbox",
+              "value": true,
+              "label": {
+                "en": "Wave",
+                "nl": "Golven"
+              }
+            },
+            {
+              "id": "phase",
+              "type": "checkbox",
+              "value": true,
+              "label": {
+                "en": "Phase",
+                "nl": "Faseren"
+              }
+            },
+            {
+              "id": "phasedFadeAway",
+              "type": "checkbox",
+              "value": true,
+              "label": {
+                "en": "Phased fade",
+                "nl": "Fase vervagen"
+              }
+            },
+            {
+              "id": "phasedTwinkle",
+              "type": "checkbox",
+              "value": true,
+              "label": {
+                "en": "Phased twinkle",
+                "nl": "fase twinkel"
+              }
+            },
+            {
+              "id": "fadeAway",
+              "type": "checkbox",
+              "value": true,
+              "label": {
+                "en": "Fade away",
+                "nl": "Vervagen"
+              }
+            },
+            {
+              "id": "fastTwinkle",
+              "type": "checkbox",
+              "value": true,
+              "label": {
+                "en": "Fast Twinkle",
+                "nl": "Snel twinkel"
+              }
+            },
+            {
+              "id": "stayOn",
+              "type": "checkbox",
+              "value": true,
+              "label": {
+                "en": "Stay on",
+                "nl": "Continu aan"
+              }
+            }
+          ]
+        }
+      ]
     }
   ],
 	"flow": {
@@ -254,7 +386,7 @@
           {
             "name": "cluster_light",
             "type": "device",
-            "filter": "driver_id=cluster_light"
+            "filter": "driver_id=cluster_light||lumineo"
           }
         ],
         "tokens": [
@@ -281,7 +413,7 @@
           {
             "name": "cluster_light",
             "type": "device",
-            "filter": "driver_id=cluster_light"
+            "filter": "driver_id=cluster_light||lumineo"
           }
         ]
       },
@@ -295,7 +427,7 @@
           {
             "name": "cluster_light",
             "type": "device",
-            "filter": "driver_id=cluster_light"
+            "filter": "driver_id=cluster_light||lumineo"
           },
           {
             "name": "mode_dropdown",
