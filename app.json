@@ -383,7 +383,7 @@
         },
         "args": [
           {
-            "name": "cluster_light",
+            "name": "device",
             "type": "device",
             "filter": "driver_id=cluster_light||lumineo"
           }
@@ -410,7 +410,7 @@
         },
         "args": [
           {
-            "name": "cluster_light",
+            "name": "device",
             "type": "device",
             "filter": "driver_id=cluster_light||lumineo"
           }
@@ -424,7 +424,7 @@
         },
         "args": [
           {
-            "name": "cluster_light",
+            "name": "device",
             "type": "device",
             "filter": "driver_id=cluster_light||lumineo"
           },
