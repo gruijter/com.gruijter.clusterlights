@@ -112,8 +112,8 @@
     {
       "id": "cluster_light",
       "name": {
-        "en": "Cluster light",
-        "nl": "Cluster light"
+        "en": "LightsApp",
+        "nl": "LightsApp"
       },
       "images": {
         "large": "drivers/cluster_light/assets/images/large.jpg",
