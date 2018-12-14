@@ -47,10 +47,10 @@ class MyApp extends Homey.App {
 			.on('memwarn', () => {
 				this.log('memwarn!');
 			});
-		// // do garbage collection every 10 minutes
-		// this.intervalIdGc = setInterval(() => {
-		// 	global.gc();
-		// }, 1000 * 60 * 10);
+		// do garbage collection every 10 minutes
+		this.intervalIdGc = setInterval(() => {
+			global.gc();
+		}, 1000 * 60 * 10);
 
 		// testBle();
 	}
