@@ -6,10 +6,12 @@
   "permissions": [
   ],
   "name": {
-    "en": "BLE Christmas Lights"
+    "en": "BLE Christmas Lights",
+    "de": "BLE Weihnachts-Beleuchtung"
   },
   "description": {
     "en": "Homey app for bluetooth LED lights",
+    "de": "Homey App für Bluetooth LED Beleuchtung",	  
     "nl": "Homey app voor bluetooth LED verlichting"
   },
   "category": [
@@ -17,6 +19,7 @@
   ],
   "tags": {
     "en": [ "christmas", "xmas", "led", "lights", "cluster", "bluetooth", "BLE", "novolink", "lumineo" ],
+    "de": [ "Weihnachten", "X-MAS", "LED", "Lichter", "Cluster", "Bluetooth", "BLE", "novolink", "lumineo" ],  
     "nl": [ "kerst", "kerstmis", "led", "verlichting", "cluster", "bluetooth", "BLE", "novolink", "lumineo"]
   },
   "images": {
@@ -46,10 +49,12 @@
       "type": "enum",
       "title": {
         "en": "mode",
+        "de": "Modus",
         "nl": "effect"
       },
       "desc": {
         "en": "Mode of the light",
+        "de": "Licht-Effekt",
         "nl": "licht effect"
       },
       "values": [
@@ -57,6 +62,7 @@
           "id": "wave",
           "title": {
             "en": "wave",
+            "de": "Impuls",
             "nl": "golven"
           }
         },
@@ -64,6 +70,7 @@
           "id": "phase",
           "title": {
             "en": "phase",
+            "de": "Stufe",
             "nl": "faseren"
           }
         },
@@ -71,6 +78,7 @@
           "id": "phasedFadeAway",
           "title": {
             "en": "phased fade",
+	    "de": "stufenweise ausblenden",
             "nl": "fase vervagen"
           }
         },
@@ -78,6 +86,7 @@
           "id": "phasedTwinkle",
           "title": {
             "en": "phased twinkle",
+	    "de": "stufenweise blinken",
             "nl": "fase twinkel"
           }
         },
@@ -85,6 +94,7 @@
           "id": "fadeAway",
           "title": {
             "en": "fade away",
+	    "de": "ausblenden",
             "nl": "vervagen"
           }
         },
@@ -92,6 +102,7 @@
           "id": "fastTwinkle",
           "title": {
             "en": "fast Twinkle",
+	    "de": "schnell blinken",
             "nl": "snel twinkel"
           }
         },
@@ -99,6 +110,7 @@
           "id": "stayOn",
           "title": {
             "en": "stay on",
+	    "de": "kontinuierlich leuchten",
             "nl": "continu aan"
           }
         }
@@ -112,6 +124,7 @@
       "id": "cluster_light",
       "name": {
         "en": "LightsApp",
+        "de": "LightsApp",
         "nl": "LightsApp"
       },
       "images": {
@@ -124,6 +137,7 @@
 				"mode": {
           "title": {
             "en": "mode",
+	    "de": "Modus",	  
             "nl": "effect"
           },
           "showTitle": true
@@ -145,6 +159,7 @@
             "options": {
               "title": {
                 "en": "mode",
+	        "de": "Modus",
                 "nl": "effect"
               },
               "showTitle": true
@@ -170,6 +185,7 @@
           "type": "group",
           "label": {
             "en": "Random mode",
+            "de": "Zufalls Modus",
             "nl": "Willekeurig effect"
           },
           "children": [
@@ -179,6 +195,7 @@
               "value": true,
               "label": {
                 "en": "Wave",
+		"de": "Impuls",
                 "nl": "Golven"
               }
             },
@@ -188,6 +205,7 @@
               "value": true,
               "label": {
                 "en": "Phase",
+		"de": "Stufe",      
                 "nl": "Faseren"
               }
             },
@@ -197,6 +215,7 @@
               "value": true,
               "label": {
                 "en": "Phased fade",
+		"de": "stufenweise ausblenden",      
                 "nl": "Fase vervagen"
               }
             },
@@ -206,6 +225,7 @@
               "value": true,
               "label": {
                 "en": "Phased twinkle",
+		"de": "stufenweise blinken",      
                 "nl": "fase twinkel"
               }
             },
@@ -215,6 +235,7 @@
               "value": true,
               "label": {
                 "en": "Fade away",
+		"de": "ausblenden",      
                 "nl": "Vervagen"
               }
             },
@@ -224,6 +245,7 @@
               "value": true,
               "label": {
                 "en": "Fast Twinkle",
+		"de": "schnell blinken",      
                 "nl": "Snel twinkel"
               }
             },
@@ -233,6 +255,7 @@
               "value": true,
               "label": {
                 "en": "Stay on",
+		"de": "kontinuierlich leuchten",      
                 "nl": "Continu aan"
               }
             }
@@ -256,6 +279,7 @@
 				"mode": {
           "title": {
             "en": "mode",
+	    "de": "Modus",  
             "nl": "effect"
           },
           "showTitle": true
@@ -277,6 +301,7 @@
             "options": {
               "title": {
                 "en": "mode",
+	        "de": "Modus",		      
                 "nl": "effect"
               },
               "showTitle": true
@@ -302,6 +327,7 @@
           "type": "group",
           "label": {
             "en": "Random mode",
+	    "de": "Zufallsmodus",  
             "nl": "Willekeurig effect"
           },
           "children": [
@@ -311,6 +337,7 @@
               "value": true,
               "label": {
                 "en": "Wave",
+		"de": "Impuls",
                 "nl": "Golven"
               }
             },
@@ -320,6 +347,7 @@
               "value": true,
               "label": {
                 "en": "Phase",
+		"de": "Stufe",      
                 "nl": "Faseren"
               }
             },
@@ -329,6 +357,7 @@
               "value": true,
               "label": {
                 "en": "Phased fade",
+		"de": "stufenweise ausblenden",      
                 "nl": "Fase vervagen"
               }
             },
@@ -338,6 +367,7 @@
               "value": true,
               "label": {
                 "en": "Phased twinkle",
+		"de": "stufenweise blinken",      
                 "nl": "fase twinkel"
               }
             },
@@ -347,6 +377,7 @@
               "value": true,
               "label": {
                 "en": "Fade away",
+		"de": "ausblenden",      
                 "nl": "Vervagen"
               }
             },
@@ -356,6 +387,7 @@
               "value": true,
               "label": {
                 "en": "Fast Twinkle",
+		"de": "schnell blinken",      
                 "nl": "Snel twinkel"
               }
             },
@@ -365,6 +397,7 @@
               "value": true,
               "label": {
                 "en": "Stay on",
+		"de": "kontinuierlich leuchten",      
                 "nl": "Continu aan"
               }
             }
@@ -379,6 +412,7 @@
         "id": "mode_changed",
         "title": {
           "en": "Mode changed",
+          "de": "Modus geändert",
           "nl": "Effect veranderd"
         },
         "args": [
@@ -394,6 +428,7 @@
             "type": "string",
             "title": {
               "en": "mode",
+	      "de": "Modus",    
               "nl": "effect"
             },
             "example": "twinkle"
@@ -406,6 +441,7 @@
         "id": "change_random_mode",
         "title": {
           "en": "Random mode",
+	  "de": "Zufallsmodus",
           "nl": "Willekeurig effect"
         },
         "args": [
@@ -420,6 +456,7 @@
         "id": "change_mode",
         "title": {
           "en": "Mode",
+	  "de": "Modus",
           "nl": "Effect"
         },
         "args": [
@@ -436,6 +473,7 @@
                 "id": "wave",
                 "label": {
                   "en": "Wave",
+		  "de": "Impuls",	
                   "nl": "Golven"
                 }
               },
@@ -443,6 +481,7 @@
                 "id": "phase",
                 "label": {
                   "en": "Phase",
+		  "de": "Stufe",
                   "nl": "Faseren"
                 }
               },
@@ -450,6 +489,7 @@
                 "id": "phasedFadeAway",
                 "label": {
                   "en": "Phased fade",
+		  "de": "stufenweise ausblenden",
                   "nl": "Fase vervagen"
                 }
               },
@@ -457,6 +497,7 @@
                 "id": "phasedTwinkle",
                 "label": {
                   "en": "Phased twinkle",
+		  "de": "stufenweise blinken",
                   "nl": "fase twinkel"
                 }
               },
@@ -464,6 +505,7 @@
                 "id": "fadeAway",
                 "label": {
                   "en": "Fade away",
+		  "de": "ausblenden",
                   "nl": "Vervagen"
                 }
               },
@@ -471,6 +513,7 @@
                 "id": "fastTwinkle",
                 "label": {
                   "en": "Fast Twinkle",
+		  "de": "schnell blinken",
                   "nl": "Snel twinkel"
                 }
               },
@@ -478,6 +521,7 @@
                 "id": "stayOn",
                 "label": {
                   "en": "Stay on",
+		  "de": "kontinuierlich leuchten",
                   "nl": "Continu aan"
                 }
               }
