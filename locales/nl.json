@@ -1,0 +1,8 @@
+{
+    "settings": {
+        "title":            "BLE Kerstverlichting",
+        "loggingLegend":    "Debug Logs",
+        "getLogs":          "ververs",
+        "deleteLogs":       "verwijder"
+    }
+}

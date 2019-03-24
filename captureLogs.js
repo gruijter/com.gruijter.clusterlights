@@ -1,20 +1,20 @@
 /*
-Copyright 2017, 2018, Robin de Gruijter (gruijter@hotmail.com)
+Copyright 2018, 2019, Robin de Gruijter (gruijter@hotmail.com)
 
-This file is part of com.gruijter.netgear.
+This file is part of com.gruijter.clusterlights.
 
-com.gruijter.netgear is free software: you can redistribute it and/or modify
+com.gruijter.clsterlights is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation, either version 3 of the License, or
 (at your option) any later version.
 
-com.gruijter.netgear is distributed in the hope that it will be useful,
+com.gruijter.clusterlights is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
-along with com.gruijter.netgear.  If not, see <http://www.gnu.org/licenses/>.
+along with com.gruijter.clusterlights. If not, see <http://www.gnu.org/licenses/>.
 */
 
 'use strict';
@@ -42,7 +42,7 @@ class captureLogs {
 	getLogs() {
 		fs.readFile(this.logFile, 'utf8', (err, data) => {
 			if (err) {
-				Homey.app.error('error reading logfile: ', err.message);
+				Homey.app.error('no logfile');
 				return [];
 			}
 			try {
@@ -56,6 +56,7 @@ class captureLogs {
 			return this.logArray;
 		});
 	}
+
 	saveLogs() {
 		fs.writeFile(this.logFile, JSON.stringify(this.logArray), (err) => {
 			if (err) {
@@ -65,6 +66,7 @@ class captureLogs {
 			}
 		});
 	}
+
 	deleteLogs() {
 		// this.log('deleting logs from frontend');
 		fs.unlink(this.logFile, (err) => {
@@ -91,6 +93,7 @@ class captureLogs {
 		});
 		// captureStdout.release();
 	}
+
 	captureStdErr() {
 		// Capture all writes to stderr (e.g. this.error)
 		this.captureStderr = new StdOutFixture({ stream: process.stderr });
@@ -104,9 +107,11 @@ class captureLogs {
 		});
 		// captureStderr.release();
 	}
+
 	releaseStdOut() {
 		this.captureStdout.release();
 	}
+
 	releaseStdErr() {
 		this.captureStderr.release();
 	}

@@ -1,6 +1,6 @@
 {
     "settings": {
-        "title":            "Cluster Lights App",
+        "title":            "BLE Weihnachts-Beleuchtung",
         "loggingLegend":    "Debug Logs",
         "getLogs":          "aktualisieren",
         "deleteLogs":       "löschen"
