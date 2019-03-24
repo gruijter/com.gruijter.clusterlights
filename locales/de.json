@@ -1,0 +1,8 @@
+{
+    "settings": {
+        "title":            "Cluster Lights App",
+        "loggingLegend":    "Debug Logs",
+        "getLogs":          "aktualisieren",
+        "deleteLogs":       "löschen"
+    }
+}
