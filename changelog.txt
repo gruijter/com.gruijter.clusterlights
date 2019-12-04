@@ -1,3 +1,4 @@
+1.0.1 04.12.2019 Readme changed for app store compatibility
 1.0.0 01.12.2019 Homey V3 energy added
 0.5.2 24.03.2019 Homey V2 version with German translation.
 0.5.0 13.12.2018 Added support for lumineo. Stability improvements

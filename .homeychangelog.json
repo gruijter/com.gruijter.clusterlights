@@ -1,0 +1,20 @@
+{
+  "1.0.1": {
+    "en": "Readme changed for app store compatibility"
+  },
+  "1.0.0": {
+    "en": "Homey V3 energy added"
+  },
+  "0.5.2": {
+    "en": "Homey V2 version with German translation."
+  },
+  "0.5.0": {
+    "en": "Added support for lumineo. Stability improvements"
+  },
+  "0.3.0": {
+    "en": "Stability improvements"
+  },
+  "0.1.0": {
+    "en": "Initial release"
+  }
+}
