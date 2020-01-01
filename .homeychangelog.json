@@ -1,4 +1,7 @@
 {
+  "1.0.2": {
+    "en": "Stability improvements for Homey V3 changes"
+  },
   "1.0.1": {
     "en": "Readme changed for app store compatibility"
   },

@@ -1,6 +1,6 @@
 {
 	"id": "com.gruijter.clusterlights",
-	"version": "1.0.1",
+	"version": "1.0.2",
 	"compatibility": ">=2.5.0",
 	"sdk": 2,
 	"permissions": [
@@ -148,7 +148,7 @@
 			"energy": {
 				"approximation": {
 					"usageOn": 6,
-					"usageOff": 0.5
+					"usageOff": 1.5
 				}
 			},
 			"mobile": {
@@ -296,7 +296,7 @@
 			"energy": {
 				"approximation": {
 					"usageOn": 6,
-					"usageOff": 0.5
+					"usageOff": 1.5
 				}
 			},
 			"mobile": {
