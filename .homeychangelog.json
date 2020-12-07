@@ -1,4 +1,7 @@
 {
+  "1.1.0": {
+    "en": "Added support for HappyLighting."
+  },
   "1.0.2": {
     "en": "Stability improvements for Homey V3 changes"
   },

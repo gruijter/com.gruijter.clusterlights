@@ -1,0 +1,119 @@
+{
+	"class": "light",
+	"images": {
+		"large": "{{driverAssetsPath}}/assets/images/large.jpg",
+		"small": "{{driverAssetsPath}}/assets/images/small.jpg"
+	 },
+	"capabilities": [ "onoff", "dim", "mode" ],
+	"capabilitiesOptions": {
+		"mode": {
+			"title": {
+				"en": "mode",
+				"de": "Modus",  
+				"nl": "effect"
+			},
+			"showTitle": true
+		}
+	},
+	"energy": {
+		"approximation": {
+			"usageOn": 6,
+			"usageOff": 1.5
+		}
+	},
+	"pair": [
+		{
+			"id": "list_devices",
+			"template": "list_devices",
+			"navigation": {
+				"next": "add_devices"
+			}
+		},
+		{
+			"id": "add_devices",
+			"template": "add_devices"
+		}
+	],
+	"settings": [
+		{
+			"type": "group",
+			"label": {
+				"en": "Random mode",
+				"de": "Zufallsmodus",  
+				"nl": "Willekeurig effect"
+			},
+			"children": [
+				{
+					"id": "wave",
+					"type": "checkbox",
+					"value": true,
+					"label": {
+						"en": "Wave",
+						"de": "Impuls",
+						"nl": "Golven"
+					}
+				},
+				{
+					"id": "phase",
+					"type": "checkbox",
+					"value": true,
+					"label": {
+						"en": "Phase",
+						"de": "Stufe",      
+						"nl": "Faseren"
+					}
+				},
+				{
+					"id": "phasedFadeAway",
+					"type": "checkbox",
+					"value": true,
+					"label": {
+						"en": "Phased fade",
+						"de": "stufenweise ausblenden",      
+						"nl": "Fase vervagen"
+					}
+				},
+				{
+					"id": "phasedTwinkle",
+					"type": "checkbox",
+					"value": true,
+					"label": {
+						"en": "Phased twinkle",
+						"de": "stufenweise blinken",      
+						"nl": "fase twinkel"
+					}
+				},
+				{
+					"id": "fadeAway",
+					"type": "checkbox",
+					"value": true,
+					"label": {
+						"en": "Fade away",
+						"de": "ausblenden",      
+						"nl": "Vervagen"
+					}
+				},
+				{
+					"id": "fastTwinkle",
+					"type": "checkbox",
+					"value": true,
+					"label": {
+						"en": "Fast Twinkle",
+						"de": "schnell blinken",      
+						"nl": "Snel twinkel"
+					}
+				},
+				{
+					"id": "stayOn",
+					"type": "checkbox",
+					"value": true,
+					"label": {
+						"en": "Stay on",
+						"de": "kontinuierlich leuchten",      
+						"nl": "Continu aan"
+					}
+				}
+			]
+		}
+	]
+}

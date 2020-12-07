@@ -1,0 +1,77 @@
+{
+    "id": "change_mode",
+    "title": {
+        "en": "Mode",
+        "de": "Modus",
+        "nl": "Effect"
+    },
+    "args": [
+        {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=cluster_light|lumineo|happylighting"
+        },
+        {
+            "name": "mode_dropdown",
+            "type": "dropdown",
+            "values": [
+                {
+                    "id": "wave",
+                    "label": {
+                        "en": "Wave",
+                        "de": "Impuls",	
+                        "nl": "Golven"
+                    }
+                },
+                {
+                    "id": "phase",
+                    "label": {
+                        "en": "Phase",
+                        "de": "Stufe",
+                        "nl": "Faseren"
+                    }
+                },
+                {
+                    "id": "phasedFadeAway",
+                    "label": {
+                        "en": "Phased fade",
+                        "de": "stufenweise ausblenden",
+                        "nl": "Fase vervagen"
+                    }
+                },
+                {
+                    "id": "phasedTwinkle",
+                    "label": {
+                        "en": "Phased twinkle",
+                        "de": "stufenweise blinken",
+                        "nl": "fase twinkel"
+                    }
+                },
+                {
+                    "id": "fadeAway",
+                    "label": {
+                        "en": "Fade away",
+                        "de": "ausblenden",
+                        "nl": "Vervagen"
+                    }
+                },
+                {
+                    "id": "fastTwinkle",
+                    "label": {
+                        "en": "Fast Twinkle",
+                        "de": "schnell blinken",
+                        "nl": "Snel twinkel"
+                    }
+                },
+                {
+                    "id": "stayOn",
+                    "label": {
+                        "en": "Stay on",
+                        "de": "kontinuierlich leuchten",
+                        "nl": "Continu aan"
+                    }
+                }
+            ]
+        }
+    ]
+}

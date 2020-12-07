@@ -30,15 +30,39 @@
 				showLogs();
 			}
 
+			// function showLogs() {
+			// 	HomeyAPI.api('GET', 'getlogs/', function(err, result) {
+			// 		if (!err) {
+			// 			document.getElementById('loglines').innerHTML = "";
+			// 			for (var i=(result.length -1); i >= 0; i--) {
+			// 				document.getElementById('loglines').innerHTML += JSON.stringify(result[i]).replace(/\"/g, "").replace(/\\n/g, "");
+			// 				document.getElementById('loglines').innerHTML += "\n"; // "<br />";
+			// 			}
+			// 		};
+			// 	});
+			// }
+
+			function displayLogs(lines) {
+				$('#loglines').html(lines);
+			}
+
 			function showLogs() {
-				HomeyAPI.api('GET', 'getlogs/', function(err, result) {
+				displayLogs('');
+				Homey.api('GET', 'getlogs/', null, (err, result) => {
 					if (!err) {
-						document.getElementById('loglines').innerHTML = "";
-						for (var i=(result.length -1); i >= 0; i--) {
-							document.getElementById('loglines').innerHTML += JSON.stringify(result[i]).replace(/\"/g, "").replace(/\\n/g, "");
-							document.getElementById('loglines').innerHTML += "\n"; // "<br />";
-						}
-					};
+						let lines = '';
+						result
+							.reverse()
+							.forEach((line) => {
+								const logLine = line
+									.replace(' [App]', '')
+									.replace(' [ManagerDrivers]', '');
+								lines += `${logLine}<br />`;
+							});
+						displayLogs(lines);
+					} else {
+						displayLogs(err);
+					}
 				});
 			}
 

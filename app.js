@@ -28,7 +28,7 @@ const Logger = require('./captureLogs.js');
 class App extends Homey.App {
 
 	onInit() {
-		this.logger = new Logger('clusterLights', 200);
+		if (!this.logger) this.logger = new Logger({ name: 'clusterLights', length: 200, homey: Homey.app });
 		this.log('Cluster Lights App is running!');
 
 		// register some listeners
@@ -67,7 +67,6 @@ class App extends Homey.App {
 }
 
 module.exports = App;
-
 
 // async function testBle() {
 // 	try {
