@@ -4,6 +4,7 @@ You can do these actions from the Homey mobile app or from a flow:
 
 * turn the lights on and off
 * dim the lights
+* set the colour
 * set the light effect
 * set a random light effect (flow only)
 

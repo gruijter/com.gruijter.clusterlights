@@ -1,73 +1,73 @@
 {
-    "type": "enum",
-    "title": {
-        "en": "mode",
-        "de": "Modus",
-        "nl": "effect"
+  "type": "enum",
+  "title": {
+    "en": "mode",
+    "de": "Modus",
+    "nl": "effect"
+  },
+  "desc": {
+    "en": "Mode of the light",
+    "de": "Licht-Effekt",
+    "nl": "licht effect"
+  },
+  "values": [
+    {
+      "id": "wave",
+      "title": {
+        "en": "wave",
+        "de": "Impuls",
+        "nl": "golven"
+      }
     },
-    "desc": {
-        "en": "Mode of the light",
-        "de": "Licht-Effekt",
-        "nl": "licht effect"
+    {
+      "id": "phase",
+      "title": {
+        "en": "phase",
+        "de": "Stufe",
+        "nl": "faseren"
+      }
     },
-    "values": [
-        {
-            "id": "wave",
-            "title": {
-                "en": "wave",
-                "de": "Impuls",
-                "nl": "golven"
-            }
-        },
-        {
-            "id": "phase",
-            "title": {
-                "en": "phase",
-                "de": "Stufe",
-                "nl": "faseren"
-            }
-        },
-        {
-            "id": "phasedFadeAway",
-            "title": {
-                "en": "phased fade",
-                "de": "stufenweise ausblenden",
-                "nl": "fase vervagen"
-            }
-        },
-        {
-            "id": "phasedTwinkle",
-            "title": {
-                "en": "phased twinkle",
-                "de": "stufenweise blinken",
-                "nl": "fase twinkel"
-            }
-        },
-        {
-            "id": "fadeAway",
-            "title": {
-                "en": "fade away",
-                "de": "ausblenden",
-                "nl": "vervagen"
-            }
-        },
-        {
-            "id": "fastTwinkle",
-            "title": {
-                "en": "fast Twinkle",
-                "de": "schnell blinken",
-                "nl": "snel twinkel"
-            }
-        },
-        {
-            "id": "stayOn",
-            "title": {
-                "en": "stay on",
-                "de": "kontinuierlich leuchten",
-                "nl": "continu aan"
-            }
-        }
-    ],
-    "getable": true,
-    "setable": true
+    {
+      "id": "phasedFadeAway",
+      "title": {
+        "en": "phased fade",
+        "de": "stufenweise ausblenden",
+        "nl": "fase vervagen"
+      }
+    },
+    {
+      "id": "phasedTwinkle",
+      "title": {
+        "en": "phased twinkle",
+        "de": "stufenweise blinken",
+        "nl": "fase twinkel"
+      }
+    },
+    {
+      "id": "fadeAway",
+      "title": {
+        "en": "fade away",
+        "de": "ausblenden",
+        "nl": "vervagen"
+      }
+    },
+    {
+      "id": "fastTwinkle",
+      "title": {
+        "en": "fast Twinkle",
+        "de": "schnell blinken",
+        "nl": "snel twinkel"
+      }
+    },
+    {
+      "id": "stayOn",
+      "title": {
+        "en": "stay on",
+        "de": "kontinuierlich leuchten",
+        "nl": "continu aan"
+      }
+    }
+  ],
+  "getable": true,
+  "setable": true
 }

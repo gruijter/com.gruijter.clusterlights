@@ -38,7 +38,7 @@ const deviceSpecifics = {
 		fastTwinkle: Buffer.from('54509f66cacc', 'hex'),	// twinkleflash
 		stayOn:	Buffer.from('54511de448414a', 'hex'),	// steadydimmer
 	},
-	dimLevel: (value) => {	
+	dimLevel: (value) => 
 		const dimMode = {
 			25: Buffer.from('5451f009a5aca4', 'hex'),
 			50: Buffer.from('545158a10d040d', 'hex'),

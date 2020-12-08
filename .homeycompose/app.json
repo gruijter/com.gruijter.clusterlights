@@ -1,49 +1,107 @@
 {
-	"id": "com.gruijter.clusterlights",
-	"version": "1.1.0",
-	"compatibility": ">=2.5.0",
-	"sdk": 2,
-	"permissions": [
-		"homey:wireless:ble"
-	],
-	"name": {
-		"en": "BLE Christmas Lights",
-		"de": "BLE Weihnachts-Beleuchtung",
-		"nl": "BLE Kerstverlichting"
-	},
-	"description": {
-		"en": "Homey app for bluetooth LED lights",
-		"de": "Homey App für Bluetooth LED Beleuchtung",	  
-		"nl": "Homey app voor bluetooth LED verlichting"
-	},
-	"category": [
-		"lights"
-	],
-	"tags": {
-		"en": [ "christmas", "xmas", "led", "lights", "cluster", "bluetooth", "BLE", "novolink", "lumineo", "happylighting" ],
-		"de": [ "Weihnachten", "X-MAS", "LED", "Lichter", "Cluster", "Bluetooth", "BLE", "novolink", "lumineo", "happylighting" ],  
-		"nl": [ "kerst", "kerstmis", "led", "verlichting", "cluster", "bluetooth", "BLE", "novolink", "lumineo", "happylighting" ]
-	},
-	"images": {
-		"large": "/assets/images/large.jpg",
-		"small": "/assets/images/small.jpg"
-	},
-	"author": {
-		"name": "Robin Gruijter",
-		"email": "gruijter@hotmail.com"
-	},
-	"copyright": "Robin de Gruijter (gruijter@hotmail.com)",
-	"license": " GPL-3.0-or-later",
-	"contributors": {
-		"developers": [{"name": "Robin de Gruijter","email": "gruijter@hotmail.com"}],
-		"translators": [{"name": "🇬🇧 Robin"},{"name": "🇳🇱 Robin"},{"name": "🇩🇪 Tino"}]
-	},
-	"contributing": {
-		"donate": { "paypal": { "username": "gruijter" }}
-	},
-	"bugs": {
-	"url": "https://github.com/gruijter/com.gruijter.clusterlights/issues"
-	},
-	"homeyCommunityTopicId": 4839,
-  "gtin": ["8719632923589", "8719202334944", "8800159746246", "8719202336085", "8718533914313"]
+  "id": "com.gruijter.clusterlights",
+  "version": "1.1.0",
+  "compatibility": ">=3.0.0",
+  "sdk": 2,
+  "permissions": [
+    "homey:wireless:ble"
+  ],
+  "name": {
+    "en": "BLE Christmas Lights",
+    "de": "BLE Weihnachts-Beleuchtung",
+    "nl": "BLE Kerstverlichting"
+  },
+  "description": {
+    "en": "Homey app for bluetooth LED lights",
+    "de": "Homey App für Bluetooth LED Beleuchtung",
+    "nl": "Homey app voor bluetooth LED verlichting"
+  },
+  "category": [
+    "lights"
+  ],
+  "tags": {
+    "en": [
+      "christmas",
+      "xmas",
+      "led",
+      "lights",
+      "cluster",
+      "bluetooth",
+      "BLE",
+      "novolink",
+      "lumineo",
+      "happylighting"
+    ],
+    "de": [
+      "Weihnachten",
+      "X-MAS",
+      "LED",
+      "Lichter",
+      "Cluster",
+      "Bluetooth",
+      "BLE",
+      "novolink",
+      "lumineo",
+      "happylighting"
+    ],
+    "nl": [
+      "kerst",
+      "kerstmis",
+      "led",
+      "verlichting",
+      "cluster",
+      "bluetooth",
+      "BLE",
+      "novolink",
+      "lumineo",
+      "happylighting"
+    ]
+  },
+  "images": {
+    "large": "/assets/images/large.jpg",
+    "small": "/assets/images/small.jpg"
+  },
+  "author": {
+    "name": "Robin Gruijter",
+    "email": "gruijter@hotmail.com"
+  },
+  "copyright": "Robin de Gruijter (gruijter@hotmail.com)",
+  "license": " GPL-3.0-or-later",
+  "contributors": {
+    "developers": [
+      {
+        "name": "Robin de Gruijter",
+        "email": "gruijter@hotmail.com"
+      }
+    ],
+    "translators": [
+      {
+        "name": "🇬🇧 Robin"
+      },
+      {
+        "name": "🇳🇱 Robin"
+      },
+      {
+        "name": "🇩🇪 Tino"
+      }
+    ]
+  },
+  "contributing": {
+    "donate": {
+      "paypal": {
+        "username": "gruijter"
+      }
+    }
+  },
+  "bugs": {
+    "url": "https://github.com/gruijter/com.gruijter.clusterlights/issues"
+  },
+  "homeyCommunityTopicId": 4839,
+  "gtin": [
+    "8719632923589",
+    "8719202334944",
+    "8800159746246",
+    "8719202336085",
+    "8718533914313"
+  ]
 }

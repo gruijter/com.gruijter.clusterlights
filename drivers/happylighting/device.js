@@ -38,21 +38,7 @@ const deviceSpecifics = {
 		fastTwinkle: Buffer.from('bb370544', 'hex'),	// white strobe
 		stayOn:	Buffer.from('56ffffff00f0aa', 'hex'),	// RGB full
 	},
-	dimLevel: (value) => {
-		const dimMode = {
-			25: Buffer.from('56101000foaa', 'hex'),
-			50: Buffer.from('5630303000f0aa', 'hex'),
-			75: Buffer.from('5677777700f0aa', 'hex'),
-			100: Buffer.from('6ffffff00f0aa', 'hex'),
-			125: Buffer.from('56ffffff00f0aa', 'hex'),
-		};
-		if ((value < 0) || (value > 1)) {
-			return new Error('value must be between 0 and 1');
-		}
-		const dim = 25 * (Math.floor(4 * value) + 1);
-		const levelBuffer = dimMode[dim];
-		return levelBuffer;
-	},
+	setRgb: (rgbValue) => Buffer.from(`56${rgbValue.rgbHexString}00f0aa`, 'hex'),
 };
 
 class HappyDevice extends BLELightDevice {

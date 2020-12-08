@@ -30,18 +30,6 @@
 				showLogs();
 			}
 
-			// function showLogs() {
-			// 	HomeyAPI.api('GET', 'getlogs/', function(err, result) {
-			// 		if (!err) {
-			// 			document.getElementById('loglines').innerHTML = "";
-			// 			for (var i=(result.length -1); i >= 0; i--) {
-			// 				document.getElementById('loglines').innerHTML += JSON.stringify(result[i]).replace(/\"/g, "").replace(/\\n/g, "");
-			// 				document.getElementById('loglines').innerHTML += "\n"; // "<br />";
-			// 			}
-			// 		};
-			// 	});
-			// }
-
 			function displayLogs(lines) {
 				$('#loglines').html(lines);
 			}
@@ -55,9 +43,10 @@
 							.reverse()
 							.forEach((line) => {
 								const logLine = line
+									.replace(' [log]', '')
 									.replace(' [App]', '')
 									.replace(' [ManagerDrivers]', '');
-								lines += `${logLine}<br />`;
+								lines += `${logLine}\n`;
 							});
 						displayLogs(lines);
 					} else {
