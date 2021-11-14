@@ -1,5 +1,5 @@
 /*
-Copyright 2018 - 2020, Robin de Gruijter (gruijter@hotmail.com)
+Copyright 2018 - 2021, Robin de Gruijter (gruijter@hotmail.com)
 
 This file is part of com.gruijter.clusterlights.
 
@@ -19,14 +19,14 @@ along with com.gruijter.clusterlights. If not, see <http://www.gnu.org/licenses/
 
 'use strict';
 
-const BLELightDriver = require('../../lib/ble_light_driver.js');
+const GenericDriver = require('../../lib/generic_driver.js');
 
 const driverSpecifics = {
 	// LEDserviceUuid: 'ffd5',
 	localNameFilter: 'Triones',
 };
 
-class HappyDriver extends BLELightDriver {
+class HappyDriver extends GenericDriver {
 	onInit() {
 		this.log('HappyDriver onInit');
 		this.ds = driverSpecifics;

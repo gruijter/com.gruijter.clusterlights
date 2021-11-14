@@ -1,5 +1,5 @@
 /*
-Copyright 2018, Robin de Gruijter (gruijter@hotmail.com)
+Copyright 2018 - 2021, Robin de Gruijter (gruijter@hotmail.com)
 
 This file is part of com.gruijter.clusterlights.
 
@@ -21,7 +21,7 @@ along with com.gruijter.clusterlights. If not, see <http://www.gnu.org/licenses/
 
 'use strict';
 
-const BLELightDevice = require('../../lib/ble_light_device.js');
+const GenericDevice = require('../../lib/generic_device.js');
 
 const deviceSpecifics = {
 	LEDserviceUuid: 'fff0',
@@ -50,7 +50,7 @@ const deviceSpecifics = {
 	},
 };
 
-class ClusterLightDevice extends BLELightDevice {
+class ClusterLightDevice extends GenericDevice {
 
 	onInit() {
 		// this.log('ClusterLightDevice onInit');

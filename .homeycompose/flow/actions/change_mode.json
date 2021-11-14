@@ -5,6 +5,9 @@
     "de": "Modus",
     "nl": "Effect"
   },
+  "titleFormatted": {
+    "en": "Mode [[mode_dropdown]]"
+  },
   "args": [
     {
       "name": "device",

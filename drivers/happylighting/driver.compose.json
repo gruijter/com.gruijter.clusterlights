@@ -125,5 +125,12 @@
         }
       ]
     }
+  ],
+  "connectivity": [
+    "lan",
+    "ble"
+  ],
+  "platforms": [
+    "local"
   ]
 }

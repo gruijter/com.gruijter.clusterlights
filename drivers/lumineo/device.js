@@ -1,5 +1,5 @@
 /*
-Copyright 2018, Robin de Gruijter (gruijter@hotmail.com)
+Copyright 2018 - 2021, Robin de Gruijter (gruijter@hotmail.com)
 
 This file is part of com.gruijter.clusterlights.
 
@@ -21,7 +21,7 @@ along with com.gruijter.clusterlights. If not, see <http://www.gnu.org/licenses/
 
 'use strict';
 
-const BLELightDevice = require('../../lib/ble_light_device.js');
+const GenericDevice = require('../../lib/generic_device.js');
 
 const deviceSpecifics = {
 	LEDserviceUuid: '1000',
@@ -38,7 +38,7 @@ const deviceSpecifics = {
 		fastTwinkle: Buffer.from('54509f66cacc', 'hex'),	// twinkleflash
 		stayOn:	Buffer.from('54511de448414a', 'hex'),	// steadydimmer
 	},
-	dimLevel: (value) => 
+	dimLevel: (value) => {
 		const dimMode = {
 			25: Buffer.from('5451f009a5aca4', 'hex'),
 			50: Buffer.from('545158a10d040d', 'hex'),
@@ -55,7 +55,7 @@ const deviceSpecifics = {
 	},
 };
 
-class LumineoDevice extends BLELightDevice {
+class LumineoDevice extends GenericDevice {
 
 	onInit() {
 		// this.log('LumineoDevice onInit');

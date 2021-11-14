@@ -1,5 +1,5 @@
 /*
-Copyright 2018 - 2020, Robin de Gruijter (gruijter@hotmail.com)
+Copyright 2018 - 2021, Robin de Gruijter (gruijter@hotmail.com)
 
 This file is part of com.gruijter.clusterlights.
 
@@ -21,7 +21,7 @@ along with com.gruijter.clusterlights. If not, see <http://www.gnu.org/licenses/
 
 'use strict';
 
-const BLELightDevice = require('../../lib/ble_light_device.js');
+const GenericDevice = require('../../lib/generic_device.js');
 
 const deviceSpecifics = {
 	LEDserviceUuid: 'ffd5',
@@ -41,7 +41,7 @@ const deviceSpecifics = {
 	setRgb: (rgbValue) => Buffer.from(`56${rgbValue.rgbHexString}00f0aa`, 'hex'),
 };
 
-class HappyDevice extends BLELightDevice {
+class HappyDevice extends GenericDevice {
 
 	onInit() {
 		// this.log('LumineoDevice onInit');

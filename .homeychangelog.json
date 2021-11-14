@@ -22,5 +22,8 @@
   },
   "0.1.0": {
     "en": "Initial release"
+  },
+  "2.0.0": {
+    "en": "Rewrite to SDK3. Fix Homey fw 5+ compatibility. New queueing system. Improved logs."
   }
 }

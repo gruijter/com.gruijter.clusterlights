@@ -1,9 +1,9 @@
 {
   "_comment": "This file is generated. Please edit .homeycompose/app.json instead.",
   "id": "com.gruijter.clusterlights",
-  "version": "1.1.0",
-  "compatibility": ">=3.0.0",
-  "sdk": 2,
+  "version": "2.0.0",
+  "compatibility": ">=5.0.0",
+  "sdk": 3,
   "permissions": [
     "homey:wireless:ble"
   ],
@@ -105,6 +105,22 @@
     "8719202336085",
     "8718533914313"
   ],
+  "brandColor": "#df5120",
+  "platforms": [
+    "local"
+  ],
+  "source": "https://github.com/gruijter/com.gruijter.clusterlights/",
+  "support": "https://community.athom.com/t/4839",
+  "api": {
+    "getLogs": {
+      "method": "get",
+      "path": "/getlogs"
+    },
+    "deleteLogs": {
+      "method": "get",
+      "path": "/deletelogs"
+    }
+  },
   "flow": {
     "actions": [
       {
@@ -113,6 +129,9 @@
           "en": "Mode",
           "de": "Modus",
           "nl": "Effect"
+        },
+        "titleFormatted": {
+          "en": "Mode [[mode_dropdown]]"
         },
         "args": [
           {
@@ -329,6 +348,13 @@
           ]
         }
       ],
+      "connectivity": [
+        "lan",
+        "ble"
+      ],
+      "platforms": [
+        "local"
+      ],
       "id": "cluster_light"
     },
     {
@@ -458,6 +484,13 @@
             }
           ]
         }
+      ],
+      "connectivity": [
+        "lan",
+        "ble"
+      ],
+      "platforms": [
+        "local"
       ],
       "id": "happylighting"
     },
@@ -616,6 +649,10 @@
             }
           ]
         }
+      ],
+      "connectivity": [
+        "lan",
+        "ble"
       ],
       "id": "lumineo"
     }

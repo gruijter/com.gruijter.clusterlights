@@ -1,3 +1,4 @@
+2.0.0 14.11.2021 Rewrite to SDK3. Fix Homey fw 5+ compatibility. New queueing system. Improved logs. 
 1.1.0 08.12.2020 Added HappyLighting LED strip. Minor bug fixes
 1.0.2 01.01.2020 Stability improvements for Homey V3 changes
 1.0.1 04.12.2019 Readme changed for app store compatibility

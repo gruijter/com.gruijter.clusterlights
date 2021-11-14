@@ -153,5 +153,9 @@
         }
       ]
     }
+  ],
+  "connectivity": [
+    "lan",
+    "ble"
   ]
 }

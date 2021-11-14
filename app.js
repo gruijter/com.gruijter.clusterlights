@@ -1,5 +1,5 @@
 /*
-Copyright 2018 - 2020, Robin de Gruijter (gruijter@hotmail.com)
+Copyright 2018 - 2021, Robin de Gruijter (gruijter@hotmail.com)
 
 This file is part of com.gruijter.clusterlights.
 
@@ -27,9 +27,8 @@ const Logger = require('./captureLogs.js');
 
 class App extends Homey.App {
 
-	onInit() {
-		if (!this.logger) this.logger = new Logger({ name: 'clusterLights', length: 200, homey: Homey.app });
-		this.log('Cluster Lights App is running!');
+	async onInit() {
+		if (!this.logger) this.logger = new Logger({ name: 'clusterLights', length: 200, homey: this.homey });
 
 		// register some listeners
 		process.on('unhandledRejection', (error) => {
@@ -38,21 +37,27 @@ class App extends Homey.App {
 		process.on('uncaughtException', (error) => {
 			this.error('uncaughtException! ', error);
 		});
-		Homey
+		this.homey
 			.on('unload', () => {
 				this.log('app unload called');
 				// save logs to persistant storage
 				this.logger.saveLogs();
 			})
 			.on('memwarn', () => {
-				this.log('memwarn!');
+				this.error('memwarn!');
 			});
-		// do garbage collection every 10 minutes
-		this.intervalIdGc = setInterval(() => {
-			global.gc();
-		}, 1000 * 60 * 10);
 
-		// testBle();
+		this.registerFlowListeners();
+
+		// do garbage collection every 10 minutes
+		// this.intervalIdGc = setInterval(() => {
+		// 	global.gc();
+		// }, 1000 * 60 * 10);
+
+		this.log('Cluster Lights App is running!');
+
+		// this.testBle();
+
 	}
 
 	//  stuff for frontend API
@@ -64,75 +69,101 @@ class App extends Homey.App {
 		return this.logger.logArray;
 	}
 
+	registerFlowListeners() {
+		// action cards
+		const changeMode = this.homey.flow.getActionCard('change_mode');
+		changeMode.registerRunListener((args) => args.device.changeMode(args, 'flow'));
+
+		const changeRandomMode = this.homey.flow.getActionCard('change_random_mode');
+		changeRandomMode.registerRunListener((args) => args.device.changeRandomMode(args, 'flow'));
+	}
+
+	// async testBle() {
+	// 	try {
+	// 		await setTimeoutPromise(1000 * 5).then(() => console.log('doing test now'));
+
+	// 		const { ble } = this.homey;
+
+	// 		// discover all peripherals that advertise a service fff0
+	// 		const list = await ble.discover(['fff0']);
+	// 		console.log('discovered:', list);
+	// 		// connect to the first peripheral
+	// 		// await setTimeoutPromise(1000, 'waiting is done');
+	// 		const peripheral = await list[0].connect();
+	// 		console.log('first peripheral:', peripheral);
+
+	// 		peripheral.on('disconnect', () => {
+	// 			console.log('BLE disconnection event');
+	// 		});
+
+	// 		await peripheral.disconnect();
+
+	// 		// // write command 'off' to the peripheral
+	// 		// await peripheral.write('fff0', 'fff1', Buffer.from('01010100', 'hex'));
+
+	// 		// discoverAllServicesAndCharacteristics
+	// 		// const sac = await peripheral.discoverAllServicesAndCharacteristics();
+	// 		// console.log(sac);
+	// 		// await setTimeoutPromise(1000, 'waiting is done');
+
+	// 		// discoverAllServices
+	// 		// const services = await peripheral.discoverServices('fff0');
+	// 		// console.log(services);
+
+	// 		const service = await peripheral.getService('fff0');
+	// 		console.log('service fff0:', service);
+
+	// 		// const char = service.discoverCharacteristics('fff1');
+	// 		// console.log(char);
+
+	// 		// // await setTimeoutPromise(1000, 'waiting is done');
+	// 		// const characteristic = service.getCharacteristic('fff1');
+	// 		// console.log('fff1:', characteristic);
+
+	// 		// write command 'off' to the characteristic
+	// 		console.log('switching to on');
+	// 		await service.write('fff1', Buffer.from('01010101', 'hex'));
+
+	// 		// // get the service in alternative way
+	// 		// const service = sac.filter(serv => serv.uuid === 'fff0');
+	// 		// console.log(service);
+
+	// 		// // get the service > doesn't work!!!
+	// 		// const service = await peripheral.getService('fff0');
+	// 		// console.log(service);
+
+	// 		// // discover the characteristics
+	// 		// const chars = await service[0].discoverCharacteristics();
+	// 		// console.log(chars);
+
+	// 		// write command 'off' to the peripheral
+	// 		// await peripheral.write('fff0', characteristicUuid, data);
+
+	// 		// // write command 'off' to the peripheral
+	// 		// await service[0].write('fff1', Buffer.from('01010100', 'hex'));
+
+	// 		// // write command 'on' to the peripheral
+	// 		// await service[0].write('fff1', Buffer.from('01010101', 'hex'));
+
+	// 		// // write command 'dim to 100%' to the peripheral
+	// 		// await service[0].write('fff1', Buffer.from('03010163', 'hex'));
+
+	// 		// disconnect the peripheral:
+	// 		await peripheral.disconnect();
+	// 		console.log('disconnected and finished');
+	// 		console.log(peripheral);
+	// 		await setTimeoutPromise(1000 * 5).then(() => console.log('after 5 secs:'));
+	// 		await peripheral.disconnect();
+	// 		console.log(peripheral);
+	// 		await setTimeoutPromise(1000 * 60).then(() => console.log('after 60 secs:'));
+	// 		await peripheral.disconnect();
+	// 		console.log(peripheral);
+
+	// 	} catch (error) {
+	// 		console.log(error);
+	// 	}
+	// }
+
 }
 
 module.exports = App;
-
-// async function testBle() {
-// 	try {
-// 		const ble = Homey.ManagerBLE;
-
-// 		// discover all peripherals that advertise a service fff0
-// 		const list = await ble.discover(['fff0']);
-// 		// console.log(list);
-// 		// connect to the first peripheral
-// 		// await setTimeoutPromise(1000, 'waiting is done');
-// 		const peripheral = await list[0].connect();
-// 		console.log(peripheral);
-// 		// // write command 'off' to the peripheral
-// 		// await peripheral.write('fff0', 'fff1', Buffer.from('01010100', 'hex'));
-
-// 		// discoverAllServicesAndCharacteristics
-// 		const sac = await peripheral.discoverAllServicesAndCharacteristics();
-// 		// console.log(sac);
-// 		// await setTimeoutPromise(1000, 'waiting is done');
-
-// 		// discoverAllServices
-// 		// const services = await peripheral.discoverServices('fff0');
-// 		// console.log(services);
-
-// 		const service = await peripheral.getService('fff0');
-// 		console.log(service);
-
-// 		// const char = service.discoverCharacteristics('fff1');
-// 		// console.log(char);
-
-// 		// // await setTimeoutPromise(1000, 'waiting is done');
-// 		// const characteristic = service.getCharacteristic('fff1');
-// 		// console.log(characteristic);
-
-// 		// write command 'off' to the characteristic
-// 		await service.write('fff1', Buffer.from('01010101', 'hex'));
-
-// 		// // get the service in alternative way
-// 		// const service = sac.filter(serv => serv.uuid === 'fff0');
-// 		// console.log(service);
-
-// 		// // get the service > doesn't work!!!
-// 		// const service = await peripheral.getService('fff0');
-// 		// console.log(service);
-
-// 		// // discover the characteristics
-// 		// const chars = await service[0].discoverCharacteristics();
-// 		// console.log(chars);
-
-// 		// write command 'off' to the peripheral
-// 		// await peripheral.write('fff0', characteristicUuid, data);
-
-// 		// // write command 'off' to the peripheral
-// 		// await service[0].write('fff1', Buffer.from('01010100', 'hex'));
-
-// 		// // write command 'on' to the peripheral
-// 		// await service[0].write('fff1', Buffer.from('01010101', 'hex'));
-
-// 		// // write command 'dim to 100%' to the peripheral
-// 		// await service[0].write('fff1', Buffer.from('03010163', 'hex'));
-
-// 		// disconnect the peripheral:
-// 		await peripheral.disconnect();
-// 		console.log('disconnected and finished');
-
-// 	} catch (error) {
-// 		console.log(error);
-// 	}
-// }
