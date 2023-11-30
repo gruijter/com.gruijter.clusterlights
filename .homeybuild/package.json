@@ -1,0 +1,15 @@
+{
+  "name": "com.gruijter.clusterlights",
+  "version": "2.0.0",
+  "private": false,
+  "license": "GPL-3.0-or-later",
+  "main": "app.js",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/gruijter/com.gruijter.clusterlights.git"
+  },
+  "devDependencies": {},
+  "dependencies": {
+    "fixture-stdout": "^0.2.1"
+  }
+}

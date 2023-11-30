@@ -1,7 +1,7 @@
 {
   "id": "com.gruijter.clusterlights",
-  "version": "2.0.0",
-  "compatibility": ">=5.0.0",
+  "version": "2.1.0",
+  "compatibility": ">=8.0.0",
   "sdk": 3,
   "permissions": [
     "homey:wireless:ble"

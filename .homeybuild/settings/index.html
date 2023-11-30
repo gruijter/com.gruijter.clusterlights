@@ -1,0 +1,69 @@
+<!doctype html>
+<html>
+	<head>
+		<!-- The '/homey.js' script must be included in your settings view to work -->
+		<script type="text/javascript" src="/homey.js" data-origin="settings"></script>
+		<script type="text/javascript" src="/manager/webserver/assets/js/jquery.js"></script>
+	</head>
+	<body>
+		<h1 data-i18n="settings.title"> </h1>
+
+		<!-- Logging panel -->
+		<div id="panel-1" class="panel">
+			<fieldset>
+				<legend data-i18n="settings.loggingLegend"> </legend>
+				<button type="button" class="right" id="button_getlog" onclick="showLogs()" data-i18n="settings.getLogs">Get Logs</button>
+				<button type="button" class="right" id="button_deletelog" onclick="deleteLogs()" data-i18n="settings.deleteLogs">Delete Logs</button>
+				<textarea id="loglines" style="width:98%; height:98%" rows=30></textarea>
+				<!-- <div id="loglines"></div> -->
+			</fieldset>
+		</div>
+
+		<script type="text/javascript">
+
+			var currentValues = {};
+			var HomeyAPI = null;
+
+			function onHomeyReady(Homey){
+				HomeyAPI = Homey;
+				Homey.ready();
+				showLogs();
+			}
+
+			function displayLogs(lines) {
+				$('#loglines').html(lines);
+			}
+
+			function showLogs() {
+				displayLogs('');
+				Homey.api('GET', 'getlogs/', null, (err, result) => {
+					if (!err) {
+						let lines = '';
+						result
+							.reverse()
+							.forEach((line) => {
+								const logLine = line
+									.replace(' [log]', '')
+									// .replace(' [App]', '')
+									.replace(' [ManagerDrivers]', '');
+								lines += `${logLine}\n`;
+							});
+						displayLogs(lines);
+					} else {
+						displayLogs(err);
+					}
+				});
+			}
+
+			function deleteLogs() {
+				HomeyAPI.api('GET', 'deletelogs/', (err) => {
+					if (err) {
+						HomeyAPI.alert(err.message, 'error'); // [, String icon], Function callback )
+					} else { HomeyAPI.alert('Logs deleted!', 'info'); }
+				});
+				showLogs();
+			}
+
+		</script>
+	</body>
+</html>
