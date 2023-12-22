@@ -72,36 +72,30 @@ class BLELightDevice extends Device {
 			// first time BLE device is in range since app start
 			if (!this.advertisement) this.advertisement = await this.homey.ble.find(this.getData().id);
 
-			// first time BLE device is connected since app start
-			if (!this.peripheral) {
-				this.log('setting up peripheral for the first time');
-				this.peripheral = await this.advertisement.connect();
-				this.peripheral.on('disconnect', () => {
-					this.log(`disconnected: ${this.getName()}`);
-					this.connected = false;
-				});
-			}
-
 			// connect and get service if not connected
-			if (!this.connected) {
+			const connected = this.advertisement && this.peripheral && (this.peripheral.state === 'connected');
+			if (!connected) {
 				this.log('connecting to peripheral');
 				this.peripheral = await this.advertisement.connect();
+				// this.peripheral.once('disconnect', () => {
+				// 	this.log(`disconnected: ${this.getName()}`);
+				// 	this.peripheral = null;
+				// });
 				await this.peripheral.discoverAllServicesAndCharacteristics();
 				this.ledService = await this.peripheral.getService(this.ds.LEDserviceUuid);
-				this.connected = true;
 			} // else this.log('already connected');
 
 		} catch (error) {
-			this.error('error connecting');
-			this.connected = false;
+			this.peripheral = null;
 			// this.setUnavailable('could not connect to light');
 		}
 	}
 
 	async disconnect() {
-		this.log('disconnecting from peripheral');
-		if (this.peripheral) await this.peripheral.disconnect().catch(this.error);
-		// this.connected = false;
+		if (this.peripheral && (this.peripheral.state === 'connected')) {
+			this.log('disconnecting from peripheral');
+			await this.peripheral.disconnect().catch(this.error);
+		}
 		return Promise.resolve(true);
 	}
 
@@ -131,10 +125,7 @@ class BLELightDevice extends Device {
 			this.advertisement = undefined;
 			this.peripheral = undefined;	// is a device (connected or unconnected)
 			this.ledService = undefined;
-			this.connected = false;
 			this.queue.enQueue({ command: 'connectService' });
-			// await this.connectService();	// find and connect the peripheral
-			// console.log(this.ledService);
 		} catch (error) {
 			this.error(error);
 		}
