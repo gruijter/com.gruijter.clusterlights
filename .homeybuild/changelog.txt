@@ -1,3 +1,4 @@
+2.1.3 23.12.2023 Improved error logging and ledService reconnect.
 2.1.1 22.12.2023 Implemented workaround for Homey BLE flaky onDisconnect.
 2.1.0 30.11.2023 Stability improvements.
 2.0.0 14.11.2021 Rewrite to SDK3. Fix Homey fw 5+ compatibility. New queueing system. Improved logs. 

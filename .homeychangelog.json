@@ -31,5 +31,8 @@
   },
   "2.1.1": {
     "en": "Implemented workaround for Homey BLE flaky onDisconnect."
+  },
+  "2.1.2": {
+    "en": "Improved error logging and ledService reconnect."
   }
 }

@@ -71,22 +71,21 @@ class BLELightDevice extends Device {
 		try {
 			// first time BLE device is in range since app start
 			if (!this.advertisement) this.advertisement = await this.homey.ble.find(this.getData().id);
-
 			// connect and get service if not connected
 			const connected = this.advertisement && this.peripheral && (this.peripheral.state === 'connected');
 			if (!connected) {
 				this.log('connecting to peripheral');
 				this.peripheral = await this.advertisement.connect();
-				// this.peripheral.once('disconnect', () => {
-				// 	this.log(`disconnected: ${this.getName()}`);
-				// 	this.peripheral = null;
-				// });
 				await this.peripheral.discoverAllServicesAndCharacteristics();
 				this.ledService = await this.peripheral.getService(this.ds.LEDserviceUuid);
 			} // else this.log('already connected');
-
+			if (!this.ledService) {
+				await this.peripheral.discoverAllServicesAndCharacteristics();
+				this.ledService = await this.peripheral.getService(this.ds.LEDserviceUuid);
+			}
 		} catch (error) {
 			this.peripheral = null;
+			this.error(error.message);
 			// this.setUnavailable('could not connect to light');
 		}
 	}
@@ -102,7 +101,7 @@ class BLELightDevice extends Device {
 	async sendCommand(command) {
 		try {
 			await this.connectService();
-			await this.ledService.write(this.ds.LEDControlCharacteristicUuid, command);
+			if (this.peripheral && this.ledService) await this.ledService.write(this.ds.LEDControlCharacteristicUuid, command);
 		} catch (error) {
 			this.error(error);
 			this.disconnect().catch(this.error);
